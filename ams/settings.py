@@ -29,16 +29,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEBUG = True
 USE_L10N = True
 
-ALLOWED_HOSTS = [
-    "87df-14-177-208-39.ngrok-free.app",
-    "127.0.0.1"
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://87df-14-177-208-39.ngrok-free.app"
-]
-
-
 # Application definition
 
 INSTALLED_APPS = [
