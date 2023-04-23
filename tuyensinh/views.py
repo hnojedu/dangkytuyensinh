@@ -6,6 +6,7 @@ from django.views import View
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
 import pandas
+from django.template import RequestContext
 
 
 def application_to_form(application, id = 0):
@@ -66,7 +67,7 @@ def index(request):
 
 def manage_application(request, page = 1):
     if not request.user.is_superuser:
-        return HttpResponse(status = 404)
+        return handler404(request)
 
     search = request.GET['search'] if 'search' in request.GET else ''
     order_by = request.GET['sort_by'] if 'sort_by' in  request.GET else 'ngay_nop'
@@ -83,7 +84,7 @@ def manage_application(request, page = 1):
         search_by_name = Application.objects.all()
 
     if order_by not in ["ngay_nop", "-tong_diem"]:
-        return HttpResponse(404)
+        return handler404(request)
 
     applications = (search_by_id | search_by_name).order_by(order_by)[(page - 1) * 100 : 100]
 
@@ -100,10 +101,11 @@ template_name = [
 def view_application(request, id):
     application = Application.objects.filter(id = id).first()
     if not application:
-        return HttpResponse(status = 404)
+        print(404)
+        return handler404(request)
 
     if not request.user.is_superuser and application.user != request.user:
-        return HttpResponse(status = 404)
+        return handler404(request)
 
     print('weqwe')
 
@@ -144,12 +146,12 @@ class ApplicationView(View):
             return HttpResponseRedirect("login")
 
         if not id and request.user.is_superuser:
-            return HttpResponse(status = 404)
+            return handler404(request)
 
         application = self.is_available(request, id)
 
         if not application:
-            return HttpResponse(status = 404)
+            return handler404(request)
 
         print(template_name[request.user.is_superuser])
         print("herer")
@@ -168,14 +170,14 @@ class ApplicationView(View):
         print(application)
 
         if not application:
-            return HttpResponse(status = 404)
+            return handler404(request)
 
         if form.is_valid():
             form = form.cleaned_data
 
             form_id = form['id']
             if form_id != id:
-                return HttpResponse(status = 404)
+                return handler404(request)
             
             #???
             try:
@@ -277,3 +279,14 @@ class UploadUserView(View):
         return render(request, 'upload.html', {
             'form': FileForm()
         })
+
+def handler404(request, *args, **argv):
+    response = render(request, '404.html')
+    response.status_code = 404
+    return response
+
+
+def handler500(request, *args, **argv):
+    response = render(request, '500.html')
+    response.status_code = 500
+    return response

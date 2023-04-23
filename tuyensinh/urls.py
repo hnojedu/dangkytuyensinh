@@ -10,3 +10,6 @@ urlpatterns = [
     path("application/<int:id>/edit", views.ApplicationView.as_view(), name="edit_admin"),
     path("upload/", views.UploadUserView.as_view(), name="upload")
 ]
+
+handler404 = 'tuyensinh.views.handler404'
+handler500 = 'tuyensinh.views.handler500'
