@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block body %}
+<style>
+    .center{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    tbody{
+        margin: 20%;
+        padding: 20%;
+    }
+    td{
+        text-align: right;
+        padding-right: 1em;
+        padding-bottom: .3em;
+    }
+    form{
+        width: 50%;
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+
+    #inner-form{
+        margin:5%;
+    }
+</style>
+
+
+<body>
+    {% block title %}
+    {% endblock %}
+    <center style="font-size:1.5em;">
+        <form method="POST">
+            {% csrf_token %}
+            <div id="inner-form">
+                <div style="color:red">
+                    {% for key, value in form.errors.items %}
+                        {{value}}
+                    {% endfor %}
+                </div>
+                <div>
+                    <table class="center">
+                        <tbody>
+                            {% for field in form %}
+                            <tr>
+                                <td><label>{{ field.label_tag }}</label></td>
+                                <td>{{field}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <input type="hidden" name="next" value="/"/>
+                    {% block button %}
+                    
+                    {% endblock %}
+                </div>
+                {% block other %}
+        
+                {% endblock %}
+            </div>
+        </form>
+    </center>
+</body>
+{% endblock %}

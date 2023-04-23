@@ -1,0 +1,138 @@
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,600' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+	<style>
+		html, body{
+			width: 100%;
+			margin: 0px;
+			min-height: 100vh;
+			padding: 0px;
+			box-sizing: border-box;
+			overflow-x: initial !important;			
+		}
+
+		#parnav {
+			font-family: 'Open Sans';
+			font-size: .9em;
+			height: 2.2em;
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background-color: white;
+			z-index: 999;
+		}
+
+		#navleft{
+			float: left;
+		}
+
+		li .aleft, logo{
+			display: block;
+			color: black;
+			text-align: center;
+			padding: .5em .5em;
+			text-decoration: none;
+		}
+
+		#parnav {
+			top: 0;
+			width: 100%;
+			border:1px solid rgb(200, 200, 200);
+			border-radius: 5px;
+		}
+
+		li .nava:hover {
+			background-color: rgb(180,180,180);
+		}
+
+		.container {
+			display: box;
+			margin: auto;
+			width: 70%;
+			min-height: 100vh ;
+			background-color: white;
+		}
+		#title{
+			margin-bottom: .5em;
+			border-bottom: 2px solid black;
+		}
+
+		#header{
+			margin-left: 5%;
+			margin-right: 5%;
+		}
+
+		#user-info{
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			justify-content: center;  
+		}
+
+		.flag{
+			text-decoration: none;
+		}
+
+		.selected-tab{
+			text-underline-offset: 4px;
+			text-decoration: underline 2px solid darkblue;
+		}
+
+    #wrapper{
+        margin-left:3em;
+        margin-right: 3em;
+        margin-top: 2em;
+        margin-bottom:2em;
+    }
+	</style>
+
+	{% block style %}
+	{% endblock %}
+</head>
+<header style="width: 60%;margin: auto;">
+	<div>
+	</div>
+</header>
+<body style=" font-family: 'Roboto';">
+	<div class = "container">
+		<div id="header" style="height:100px;position:relative">
+			<div style="float:left; position: relative;">
+                <img src="{% static 'logo.png'%}" style="float: left;">
+				<img src="{% static 'sologan.png'%}" style="margin-top:1em;float:right">
+			</div>
+			<br>
+			<div id="user-info">
+				<div style="margin-top:.5em">
+					{% if user.username %}
+						<span>Xin chào {{user.username}} |  <a href="{% url 'logout' %}">Đăng xuất</a></span>
+					{% else %}
+						<span> <a href="{% url 'login' %}">Đăng nhập</a></span>
+					{% endif %}
+				</div>
+				
+			</div>
+		</div>
+		<div style="padding-left: 5%; padding-right: 5%;margin-top: .5em;">
+			<ul id = "parnav">
+				{% if user.is_superuser %}
+					<li id = "navleft"><a class = "nava aleft" href="/manage">QUẢN LÍ HỒ SƠ</a></li>
+					<li id = "navleft"><a class = "nava aleft" href="/upload">UPLOAD TÀI KHOẢN</a></li>
+				{% else %}
+					<li id = "navleft"><a class = "nava aleft" href="/">NỘP HỒ SƠ</a></li>
+				{% endif %}
+			</ul>
+			<div style="margin-top: .5em;">
+				{% block body %}
+				{% endblock %}
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

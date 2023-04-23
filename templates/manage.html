@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block body %}
+<style>
+    #pagination {
+        position: relative;
+        margin: 0 auto;
+        text-align: center;
+        /* background-color: red; */
+    }
+
+    #pagination .button {
+        text-decoration: none ;
+        color: black;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    tbody tr:nth-child(odd){
+        background-color: rgb(238, 238, 238);
+    }
+
+    #wrapper {
+        width: 100%;
+        margin:0;
+        /* border: 1px solid black; */
+        overflow: hidden; /* will contain if #first is longer than #second */
+    }
+    #first {
+        width: 75%;
+        float:left;
+        margin-left: 1em;
+        margin-right:1em
+    }
+    #second {
+        /* border: 1px solid green; */
+        overflow: hidden;
+    }
+    input{
+        width:80%;
+    }
+</style>
+<div id = "wrapper">
+    <div id = "first">
+        <div>
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Mã hồ sơ</th>
+                        <th>Mã học sinh</th>
+                        <th>Tên học sinh</th>
+                        <th>Trường</th>
+                        <th>Tổng điểm</th>
+                        <th>Ngày nộp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                    <tr>
+                        <td><a href="{% url 'view' application.id%}" target="_blank">{{application.id}}</a></td>
+                        <td>{{application.user.username}}</td>
+                        <td>{{application.ho_va_ten}}</td>
+                        <td>{{application.truong_tieu_hoc}}</td>
+                        <td>{{application.tong_diem}}</td>
+                        <td>{{application.ngay_nop}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id = "second">
+        <form method = "GET"  action="/manage">
+            <div>
+                <span>Tìm kiếm: {{form.search}} </span>
+            </div>
+            <div style="margin-top:.5em;margin-bottom:.5em">
+                <span>Sắp xếp: {{form.sort_by}} </span>
+            </div>
+            <center>
+            <button type="submit">Tìm kiếm</button>
+        </center>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

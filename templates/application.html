@@ -1,0 +1,296 @@
+<div>
+    {% if form.errors|length %}
+    <div style="color: #a94442;background-color: #f2dede; border-color: #d6e9c6;margin:.4em;border: 1px solid transparent; border-radius: 4px;">
+        {{form.non_field_errors }}
+    </div>
+    {% endif %}
+    {% for field in form %}
+        {% if field.errors|length %}
+        <div style="color: #a94442;background-color: #f2dede; border-color: #d6e9c6;margin:.4em;border: 1px solid transparent; border-radius: 4px;">
+            {{field.errors}}
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+<div style="margin:0 auto;" id="application-form">
+
+    <style>
+        #wrapper{
+            margin-left:3em;
+            margin-right: 3em;
+            margin-top: 2em;
+            margin-bottom:2em;
+        }
+    </style>
+
+    <form action="" method="POST" id="wrapper"> 
+        {% csrf_token %}
+        {{ form.id }}
+        <style>@page { margin: 0; }</style>        
+        <style>
+            li{
+                list-style-type: none;
+            }
+            #application-form{
+                font-family: 'Roboto';
+                height:297mm;
+                width:210mm;
+                background-color: white;
+                margin: 0 auto;
+                border: 1px solid black;
+
+                position: absolute;
+                
+                left: 0;
+                right: 0;
+                
+                margin: auto;
+            }
+        
+    
+            label, .form{
+                display: flex;
+                flex-direction: column;
+            }
+        
+            label{
+                margin-bottom:.2em;
+                font-size:.8em;
+            }
+            
+            .field{
+                padding-left: 1.5em;
+                display:inline-block;
+            }
+            input,.row select{
+                font-size:1em
+            }
+            .row{
+                margin-bottom: 1em;
+            }
+        
+            #khen th, #khen td,#khen tr,#khen{
+                box-sizing: border-box;
+                border:1px solid black;
+                border-collapse: collapse;
+            }
+            #khen select{
+                border-color: transparent;
+                width: 100%;
+            }
+        
+            .null{
+                background-color: rgb(190,190,190);
+            }
+        
+            #ket-qua th, #ket-qua td,#ket-qua tr,#ket-qua table{
+                box-sizing: border-box;
+                border:1px solid black;
+                border-collapse: collapse;
+            }
+        
+            #ket-qua input{
+                width: 90%;
+                border-color: transparent;
+            }
+        
+           
+        </style>
+
+        <h3>I/ Thông tin cá nhân</h3>
+            <div class="row">
+                <div class="field" style="width:45%">
+                    <label>Phòng GDĐT</label> 
+                    <div class="form">{{form.phong_gddt }}</div>
+                </div>
+                <div class="field" style="width:45%">
+                    <label>Trường tiểu học</label> 
+                    <div class="form">{{form.truong_tieu_hoc}}</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="field" style="width:50%">
+                    <label>Họ và tên học sinh</label> 
+                    <div class="form">{{form.ho_va_ten }}</div>
+                </div>
+                <div class="field" style="width:21%">
+                    <label>Lớp</label> 
+                    <div class="form">{{form.lop}}</div>
+                </div>
+                <div class="field" style="width:15%">
+                    <label>Giới tính</label> 
+                    <div class="form">{{form.gioi_tinh}}</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="field" style="width:20%">
+                    <label>Tháng/ngày/năm sinh</label> 
+                    <div class="form">{{form.ngay_sinh }}</div>
+                </div>
+                <div class="field" style="width:33%">
+                    <label>Nơi sinh</label> 
+                    <div class="form">{{form.noi_sinh}}</div>
+                </div>
+                <div class="field" style="width:33%">
+                    <label>Dân tộc</label> 
+                    <div class="form">{{form.dan_toc}}</div>
+                </div>
+            </div>
+
+            <div style="border-bottom:1px solid rgb(190,190,190);margin-bottom: 1em;"></div>
+
+            <div class="row">
+                <p style="padding-left: 1.5em;">Nơi thường trú</p>
+                <div class="field" style="width:45%">
+                    <label>Số nhà (ngõ/ngách)</label> 
+                    <div class="form">{{form.noi_thuong_tru_so_nha }}</div>
+                </div>
+                <div class="field" style="width:45%">
+                    <label>Tổ (thôn/khu phố)</label> 
+                    <div class="form">{{form.noi_thuong_tru_to}}</div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="field" style="width:29%">
+                    <label>Phường (xã/thị trấn)</label> 
+                    <div class="form">{{form.noi_thuong_tru_phuong}}</div>
+                </div>
+                <div class="field" style="width:29%">
+                    <label>Quận (huyện)</label> 
+                    <div class="form">{{form.noi_thuong_tru_quan_huyen}}</div>
+                </div>
+                <div class="field" style="width:28%">
+                    <label>Tỉnh (thành phố)</label> 
+                    <div class="form">{{form.noi_thuong_tru_tinh}}</div>
+                </div>
+            </div>
+
+            <div style="border-bottom:1px solid rgb(190,190,190);margin-bottom: 1em;"></div>
+
+
+            <div class="row">
+                <div class="field" style="width:45%">
+                    <label>Số điện thoại</label> 
+                    <div class="form">{{form.sdt}}</div>
+                </div>
+                <div class="field" style="width:45%">
+                    <label>Mã định danh (gồm 12 số do cơ quan Công an cấp) </label> 
+                    <div class="form">{{form.ma_dinh_danh}}</div>
+                </div>
+            </div>
+
+        <h3 style="margin:0.2em">II/ Thông tin sơ tuyển</h3>
+        <h4 style="margin:0.2em">1. Khen thưởng cuối năm</h4>
+            <p style="margin:0.3em">(Nếu học sinh đạt danh hiệu “Học sinh hoàn thành tốt các nội dung học tập và rèn luyện” chọn mục là “HTT”; “hoàn thành xuất sắc
+                các nội dung học tập và rèn luyện” thì chọn mục là “HTXS” vào cột tương ứng các lớp tương ứng)</p>
+            <center>
+            <div id="khen-thuong">
+                <table id="khen" style="width:70%">
+                    <tbody>
+                        <tr>
+                            <th>Lớp 1</th>
+                            <th>Lớp 2</th>
+                            <th>Lớp 3</th>
+                            <th>Lớp 4</th>
+                            <th>Lớp 5</th>
+                        </tr>
+                        <tr>
+                            <td>{{form.khen_thuong_1}}</td>
+                            <td>{{form.khen_thuong_2}}</td>
+                            <td>{{form.khen_thuong_3}}</td>
+                            <td>{{form.khen_thuong_4}}</td>
+                            <td>{{form.khen_thuong_5}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </center>
+
+        <h4 style="margin:0.2em;margin-top:1em">2. Kết quả kiểm tra định kì cuối năm</h4>
+
+            <center>
+                <div id="ket-qua">
+                    <table id="kq" style="width:70%">
+                        <tbody>
+                            <tr>
+                                <th style="width:25%">Môn</th>
+                                <th>Lớp 1</th>
+                                <th>Lớp 2</th>
+                                <th>Lớp 3</th>
+                                <th>Lớp 4</th>
+                                <th>Lớp 5</th>
+                            </tr>
+                            <tr>
+                                <td>Toán</td>
+                                <td>{{form.ket_qua_1_toan}}</td>
+                                <td>{{form.ket_qua_2_toan}}</td>
+                                <td>{{form.ket_qua_3_toan}}</td>
+                                <td>{{form.ket_qua_4_toan}}</td>
+                                <td>{{form.ket_qua_5_toan}}</td>
+                            </tr>
+                            <tr>
+                                <td>Tiếng Việt</td>
+                                <td>{{form.ket_qua_1_tieng_viet}}</td>
+                                <td>{{form.ket_qua_2_tieng_viet}}</td>
+                                <td>{{form.ket_qua_3_tieng_viet}}</td>
+                                <td>{{form.ket_qua_4_tieng_viet}}</td>
+                                <td>{{form.ket_qua_5_tieng_viet}}</td>
+                            </tr>
+                            <tr>
+                                <td>Khoa học</td>
+                                <td class="null"></td>
+                                <td class="null"></td>
+                                <td class="null"></td>
+                                <td>{{form.ket_qua_4_khoa_hoc}}</td>
+                                <td>{{form.ket_qua_5_khoa_hoc}}</td>
+                            </tr>
+                            <tr>
+                                <td>Lịch sử và địa lí</td>
+                                <td class="null"></td>
+                                <td class="null"></td>
+                                <td class="null"></td>
+                                <td>{{form.ket_qua_4_su_dia}}</td>
+                                <td>{{form.ket_qua_5_su_dia}}</td>
+                            </tr>
+                            <tr>
+                                <td>Tiếng Anh</td>
+                                <td class="null"></td>
+                                <td class="null"></td>
+                                <td>{{form.ket_qua_3_tieng_anh}}</td>
+                                <td>{{form.ket_qua_4_tieng_anh}}</td>
+                                <td>{{form.ket_qua_5_tieng_anh}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </center>
+            <center>
+            <p style="margin-left:1em;margin-right:1em"><b><i>Cha/mẹ/người giám hộ của học sinh cam đoan các thông tin cung cấp trong đơn đăng ký dự tuyển trên là
+                đúng sự thật; nếu không đúng sẽ bị xử lý theo quy định hiện hành và hủy kết quả trúng tuyển.</i></b></p>
+            </center>
+                
+            <center>
+                {% if not done %}
+                <input type="submit" value="Nộp">
+                {% endif %}
+            </center>
+                <div style="width:50%;float:right">
+                    <center>
+                        {% if not done %}
+                        <div><i>Hà Nội, ngày.....tháng.....năm 2023</i></div>
+                        {% else %}
+                        <div><i>Hà Nội, ngày {{ application.ngay_nop|date:"d"}} tháng {{application.ngay_nop|date:"m"}} năm 2023</i></div>
+                        {% endif %}
+                        <div><b>CHA/MẸ/NGƯỜI GIÁM HỘ CỦA HỌC SINH</b></div>
+                        <div><i>(Ký, ghi họ tên)</i> </div>
+                    </center>
+
+              
+            </div>
+           
+    </form>
+</div>

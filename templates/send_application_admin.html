@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Tuyển sinh
+{% endblock %}
+
+{% block body %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'printThis.js'%}"></script>
+
+    {% if done %}
+    <center style="margin:1em">
+        <p style="margin:.5em">Hồ sơ của học sinh có mã học sinh {{application.user.username}}.</p>
+        <button onclick="print_form()">In hồ sơ</button>
+        <button><a href="{{application.id}}/edit" style="text-decoration: none;color: black;">Chỉnh sửa hồ sơ</a></button>
+    </center>
+    {% else%}
+    <center>
+        <p style="margin:.5em">Chỉnh sửa hồ sơ của học sinh có mã học sinh {{application.user.username}}.</p>
+    </center>
+    {% endif %}
+
+    {% include "application.html" with form=form application=application%}
+        
+    {% if done %}
+    <script>
+        $(':input').attr('readonly','readonly');
+        $('select').prop("disabled", true);
+
+        function print_form(){
+            $('#wrapper').printThis({importStyle: false,});
+        }
+    </script>
+    {% endif %}
+{% endblock %}
