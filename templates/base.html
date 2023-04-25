@@ -8,12 +8,17 @@
 	<link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
 	<style>
 		html, body{
-			width: 100%;
 			margin: 0px;
 			min-height: 100vh;
 			padding: 0px;
 			box-sizing: border-box;
 			overflow-x: initial !important;			
+		}
+
+		body{
+			width: 60%;
+			min-width: 25cm;
+			margin:0 auto;
 		}
 
 		#parnav {
@@ -54,7 +59,6 @@
 		.container {
 			display: box;
 			margin: auto;
-			width: 70%;
 			min-height: 100vh ;
 			background-color: white;
 		}
@@ -63,20 +67,16 @@
 			border-bottom: 2px solid black;
 		}
 
-		#header{
+		/* #header{
 			margin-left: 5%;
 			margin-right: 5%;
-		}
+		} */
 
 		#user-info{
 			display: flex;
 			flex-direction: column;
 			align-items: flex-end;
 			justify-content: center;  
-		}
-
-		.flag{
-			text-decoration: none;
 		}
 
 		.selected-tab{
@@ -118,7 +118,7 @@
 				
 			</div>
 		</div>
-		<div style="padding-left: 5%; padding-right: 5%;margin-top: .5em;">
+		<div style="margin-top: .5em;">
 			<ul id = "parnav">
 				{% if user.is_superuser %}
 					<li id = "navleft"><a class = "nava aleft" href="/manage">QUẢN LÍ HỒ SƠ</a></li>

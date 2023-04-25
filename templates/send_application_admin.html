@@ -21,16 +21,7 @@ Tuyển sinh
     </center>
     {% endif %}
 
-    {% include "application.html" with form=form application=application%}
+    {% include "application.html" with form=form application=application done=done%}
         
-    {% if done %}
-    <script>
-        $(':input').attr('readonly','readonly');
-        $('select').prop("disabled", true);
-
-        function print_form(){
-            $('#wrapper').printThis({importStyle: false,});
-        }
-    </script>
-    {% endif %}
+    
 {% endblock %}

@@ -7,10 +7,11 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
 import pandas
 from django.template import RequestContext
-
+import secrets
 
 def application_to_form(application, id = 0):
     return ApplicationForm(initial={
+                'anh_3x4': application.anh_3x4,
                 'phong_gddt': application.phong_gddt,
                 'truong_tieu_hoc': application.truong_tieu_hoc,
                 'lop': application.lop,
@@ -125,7 +126,7 @@ class ApplicationView(View):
         
     def is_available(self, request, id):
         if not id:
-            return Application()
+            return Application(user=request.user)
 
         application = Application.objects.filter(id = id).first()
 
@@ -164,7 +165,8 @@ class ApplicationView(View):
         })
 
     def post(self, request, id = 0):
-        form = ApplicationForm(request.POST)
+        form = ApplicationForm(request.POST, request.FILES)
+
         application = self.is_available(request, id)
 
         print(application)
@@ -185,6 +187,11 @@ class ApplicationView(View):
             except:
                 application.user = request.user
 
+            image = form['anh_3x4']
+            if image:
+                image._name = secrets.token_urlsafe(8) + "." + image.name.split('.')[-1]
+                application.anh_3x4 = image
+            
             application.phong_gddt = form['phong_gddt']
             application.truong_tieu_hoc = form['truong_tieu_hoc']
             application.lop = form['lop']

@@ -9,4 +9,4 @@ urlpatterns = [
     path("", include("tuyensinh.urls")),
     path("admin/", admin.site.urls),
     path('logout/',auth_views.LogoutView.as_view(next_page='/'),name='logout'),
-]
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -2,6 +2,12 @@ from django import forms
 from django.contrib.auth.forms import User
 from django.contrib.postgres.forms import SimpleArrayField
 from django.conf import settings
+from .models import Application
+
+def file_size(value): # add this to some file where you can import it from
+    limit = 1024 * 1024
+    if value.size > limit:
+        raise forms.ValidationError('Ảnh không được vượt quá 1 Megabyte.')
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -71,6 +77,7 @@ class ApplicationForm(forms.Form):
    
     ket_qua_5_tieng_anh = forms.FloatField()
     
+    anh_3x4 = forms.ImageField(required = False,widget=forms.FileInput(attrs=({'onchange':'loadFile(event)'})))
 
     def clean_sdt(self):
         sdt = self.cleaned_data['sdt']
@@ -90,6 +97,17 @@ class ApplicationForm(forms.Form):
             raise forms.ValidationError("Mã định danh không hợp lệ.")
 
         return ma_dinh_danh
+
+    def clean_anh_3x4(self):
+        anh_3x4 = self.cleaned_data['anh_3x4']
+        user = self.cleaned_data['id']
+
+        application =  Application.objects.filter(id = int(user)).first()
+
+        if not application and not anh_3x4:
+            raise forms.ValidationError("Bạn chưa tải ảnh lên.")
+
+        return anh_3x4
 
     def valid_score(self, s):
         return 0 <= s <= 10

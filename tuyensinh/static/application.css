@@ -1,0 +1,90 @@
+@media print {
+    @page { margin: 0; size: 210mm 297mm ;}
+    body {  margin-left: 15mm;
+        margin-right: 15mm;
+        margin-top: 10mm;}
+}
+
+li{
+    list-style-type: none;
+}
+#application-form{
+
+    height:297mm;
+    width:210mm;
+    border: 1px solid black;
+    left: 0;
+    right: 0;
+    
+    margin: auto;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: white;
+    margin: 0 auto;
+    
+    
+    position: relative;
+}
+label, .form{
+    display: flex;
+    flex-direction: column;
+}
+
+label{
+    margin-bottom:.1em;
+    font-size:.8em;
+}
+
+.field{
+    padding-left: 1.5em;
+    display:inline-block;
+}
+input,.row select{
+    font-size:1em
+}
+.row{
+    margin-bottom: .5em;
+}
+
+#khen th, #khen td,#khen tr,#khen{
+    box-sizing: border-box;
+    border:1px solid black;
+    border-collapse: collapse;
+}
+#khen select{
+    border-color: transparent;
+    width: 100%;
+}
+
+.null{
+    background-color: rgb(190,190,190);
+}
+
+#ket-qua th, #ket-qua td,#ket-qua table{
+    border:1px solid black;
+    border-collapse: collapse;
+}
+
+
+#ket-qua input{
+    width: 85%;
+    border-color: transparent;
+}
+
+#header{
+    overflow:hidden;
+    margin: 0;
+}
+
+#picture{
+    width: 30mm;
+    height: 40mm;
+    float:left;
+    margin:0;
+}
+
+.form-label{
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+}
+
