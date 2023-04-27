@@ -7,6 +7,7 @@ urlpatterns = [
     path("manage", views.manage_application, name="manage"),
     path("edit", views.ApplicationView.as_view(), name = "edit"),
     path("application/<int:id>", views.view_application, name="view"),
+    path("application/<int:id>/<int:status>", views.view_application, name="view"),
     path("application/<int:id>/edit", views.ApplicationView.as_view(), name="edit_admin"),
     path("upload/", views.UploadUserView.as_view(), name="upload")
 ]

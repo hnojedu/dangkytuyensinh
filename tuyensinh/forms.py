@@ -154,14 +154,25 @@ class ApplicationForm(forms.Form):
 
         return cleaned_data
 
+    def __init__(self, *args, **kwargs):
+        super(ApplicationForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'block w-full text-gray-900 border rounded sm:text-xs focus:ring-blue-500 focus:border-blue-500 light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400 light:text-white light:focus:ring-blue-500 light:focus:border-blue-500'
+            visible.field.widget.attrs['placeholder'] = " "
+            #visible.field.widget.attrs['class'] = "cleanslate"
 class SearchForm(forms.Form):
     SAP_XEP = (
         ("ngay_nop", "Ngày nộp"),
         ("-tong_diem", "Tổng điểm"),
     )
+    
 
-    search = forms.CharField(label='Tìm kiếm', max_length = 64, required = False)
-    sort_by = forms.CharField(label='Sắp xếp', widget=forms.Select(choices=SAP_XEP))
+    search = forms.CharField(label='Tìm kiếm', max_length = 64, required = False,widget=forms.TextInput(attrs={
+        'class': 'block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400 light:text-white light:focus:ring-blue-500 light:focus:border-blue-500',
+        'placeholder': 'Tìm theo tên hoặc mã học sinh'
+    }))
+    sort_by = forms.CharField(label='Sắp xếp', required=False)
+    page = forms.CharField(required=False)
 
 class FileForm(forms.Form):
     user = forms.FileField(

@@ -66,16 +66,16 @@ def index(request):
 
     return HttpResponseRedirect("/edit")
 
-def manage_application(request, page = 1):
+def manage_application(request):
     if not request.user.is_superuser:
         return handler404(request)
 
     search = request.GET['search'] if 'search' in request.GET else ''
-    order_by = request.GET['sort_by'] if 'sort_by' in  request.GET else 'ngay_nop'
+    order_by = request.GET['sort_by'] if 'sort_by' in  request.GET and request.GET['sort_by'] else 'ngay_nop'
+    page = int(request.GET['page']) if 'page' in request.GET and request.GET['page'].isdigit() else 1
 
     search_by_id = Application.objects.none()
     search_by_name = Application.objects.none()
-
     if search != '':
         if search.isdigit():
             search_by_id = Application.objects.filter(id = int(search))
@@ -84,22 +84,29 @@ def manage_application(request, page = 1):
     else:
         search_by_name = Application.objects.all()
 
-    if order_by not in ["ngay_nop", "-tong_diem"]:
+    print("qwfwefweeqweqwe")
+    print(order_by)
+    if order_by not in ["ngay_nop", "-tong_diem", "-ngay_nop", "tong_diem"]:
         return handler404(request)
+
 
     applications = (search_by_id | search_by_name).order_by(order_by)[(page - 1) * 100 : 100]
 
     return render(request, "manage.html", {
         'applications':applications,
         'form': SearchForm(request.GET),
+        'pages': [p for p in range(max(1, page - 2), max(1, page - 2) + 5)],
+        'selected_page': page,
+        'prv_page': max(1, page - 1),
+        'nxt_page': page + 1
     })
 
 template_name = [
     "send_application.html",
-    "send_application_admin.html"
+    "send_application.html"
 ]
 
-def view_application(request, id):
+def view_application(request, id, status = 0):
     application = Application.objects.filter(id = id).first()
     if not application:
         print(404)
@@ -115,6 +122,7 @@ def view_application(request, id):
         'user':request.user,
         'done': True,
         'id':id,
+        'status': status,
         'application':application
     }) 
 
@@ -251,7 +259,7 @@ class ApplicationView(View):
 
             application.save()
 
-            return HttpResponseRedirect("/application/"+str(application.id))
+            return HttpResponseRedirect("/application/"+str(application.id)+"/1")
 
         return render(request, template_name[request.user.is_superuser], {
             'form': form,

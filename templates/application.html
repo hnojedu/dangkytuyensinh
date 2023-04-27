@@ -1,7 +1,31 @@
 {% load static %}
 
 <div>
-    {% if form.errors|length %}
+    <center>
+    {% for key, value in form.errors.items %}
+        <div class="flex p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 light:bg-gray-800 light:text-red-400 light:border-red-800 w-2/4" role="alert">
+            <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+            <span class="sr-only">Info</span>
+            <div>
+              {{value}}
+            </div>
+          </div>
+    {% endfor %}
+    {% if status%}
+    <div id="alert-border-3" class="flex p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 light:text-green-400 light:bg-gray-800 light:border-green-800 w-1/2" role="alert">
+        <svg class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <div class="ml-3 text-sm font-medium">
+            Bạn đã hoàn thành hồ sơ!
+        </div>
+        <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 light:bg-gray-800 light:text-green-400 light:hover:bg-gray-700"  data-dismiss-target="#alert-border-3" aria-label="Close">
+          <span class="sr-only">Dismiss</span>
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+    </div>
+    {% endif %}
+    </center>
+
+    <!-- {% if form.errors|length %}
     <div style="color: #a94442;background-color: #f2dede; border-color: #d6e9c6;margin:.4em;border: 1px solid transparent; border-radius: 4px;">
         {{form.non_field_errors }}
     </div>
@@ -12,7 +36,7 @@
             {{field.errors}}
         </div>
         {% endif %}
-    {% endfor %}
+    {% endfor %} -->
 </div>
 <div style="margin:0 auto;" id="application-form">
 
@@ -29,19 +53,89 @@
             font-family: sans-serif;
             cursor: pointer;
         }
+        .form input, .form select{
+            border: 1px solid black;
+        }
+
+        #application-form input{
+            padding-top:.5mm;padding-bottom:.5mm;padding-right:1mm;padding-left:1mm;
+        }
+        h3,h4{
+            font-weight: bold;
+        }
     </style>
 
    
-    <form action="" method="POST" id="wrapper" enctype="multipart/form-data"> 
+    <form action="" method="POST" id="wrapper" enctype="multipart/form-data" > 
         {% csrf_token %}
         {{ form.id }}      
         <link rel="stylesheet" type="text/css" href="{% static 'application.css' %}">
 
 
         <div id="header">
-            <div id = "picture" style="word-wrap: break-word; overflow: hidden; {% if not done %}border:1px solid black{% endif %}; ">
+            <div id = "picture" style="word-wrap: break-word; overflow: hidden;font-family: 'Roboto';" >
                 {% if not done %}
-                <label for="id_anh_3x4" id="btn">Chọn ảnh</label>
+                    <button style="width: 30mm;height: 40mm;" data-modal-target="staticModal" data-modal-toggle="staticModal"  class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 light:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" type="button">
+                        Chọn ảnh 3x4
+                    </button>
+                    
+                    <!-- Main modal -->
+                    <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative w-full max-w-2xl max-h-full">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow light:bg-gray-700">
+                                <!-- Modal header -->
+                                <div class="flex items-start justify-between p-4 border-b rounded-t light:border-gray-600">
+                                    <h3 class="text-xl font-semibold text-gray-900 light:text-white">
+                                        Chọn ảnh 3x4
+                                    </h3>
+                                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center light:hover:bg-gray-600 light:hover:text-white" data-modal-hide="staticModal">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                
+                                    <div class="flex items-center justify-center w-full">
+                                        <label for="id_anh_3x4" class="flex flex-col items-center justify-center w-full h-96 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 light:hover:bg-bray-800 light:bg-gray-700 hover:bg-gray-100 light:border-gray-600 light:hover:border-gray-500 light:hover:bg-gray-600">
+                                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                                <p class="mb-2 text-sm text-gray-500 light:text-gray-400"><span class="font-semibold">Bấm vào để chọn ảnh</span> hoặc thả ảnh vào đây.</p>
+                                                <p class="mb-2 text-sm text-gray-500 light:text-gray-400" id="file-chosen">
+                                                    {% if not application.anh_3x4%}
+                                                    Chưa chọn ảnh
+                                                    {% else %}
+                                                    Đã chọn ảnh
+                                                    {% endif%}
+                                                </p>
+                                            </div>
+                                            <div style="visibility:hidden" >{{form.anh_3x4}}</div>
+                                            {% if not application.anh_3x4%}
+                                            <img id="output" hidden="false" style="border:none;width: 30mm;height: 40mm;"/>
+                                            {% else %}
+                                            <img src="{{application.anh_3x4.url}}" id="output" style="border:none;width: 30mm;height: 40mm;visibility: visible !important;" />
+                                            {% endif %}
+                                        </label>
+                                    </div> 
+
+                                <!-- Modal footer -->
+                                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b light:border-gray-600">
+                                    <button data-modal-hide="staticModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800">Hoàn thành</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="flex items-center justify-center w-full">
+                        <label for="id_anh_3x4" class="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 light:hover:bg-bray-800 light:bg-gray-700 hover:bg-gray-100 light:border-gray-600 light:hover:border-gray-500 light:hover:bg-gray-600">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <p class="mb-2 text-sm text-gray-500 light:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                            </div>
+                            
+                        </label>
+                    </div>  -->
+
+                <!-- <label for="id_anh_3x4" id="btn">Chọn ảnh</label>
                     {% if application.anh_3x4  %}
                     <span id="file-chosen">Đã chọn ảnh <img src="{{application.anh_3x4.url}}" style="width: 15mm;height: 20mm;"></span>
                     {% else %}
@@ -49,7 +143,7 @@
                     {% endif %}
                     <img id="output" hidden="false" style="border:none;width: 15mm;height: 20mm;"/>
 
-                    <div style="visibility:hidden" >{{form.anh_3x4}}</div>
+                    <div style="visibility:hidden" >{{form.anh_3x4}}</div> -->
                 {% else %}
                     <img src="{{application.anh_3x4.url}}" style="width: 30mm;height: 40mm;">
                 {% endif %}
@@ -59,63 +153,64 @@
                     <p style="margin:.2em;font-size:6mm;font-weight:bold;">PHIẾU ĐĂNG KÝ DỰ TUYỂN VÀO LỚP 6</p>
                     <h5 style="margin:.2em;font-size:4mm;font-weight:bold;">TRƯỜNG TRUNG HỌC PHỔ THÔNG CHUYÊN HÀ NỘI - AMSTERDAM </h5>
                     <h5 style="margin:.2em;font-size:4mm;font-weight:bold;">NĂM HỌC 2023-2024 </h5>
-                </center>
+                </center> 
             </div>
         </div>
 
-        <h3 style="margin:.6em;text-decoration: underline 2px; text-underline-offset: 2px;;">I/ THÔNG TIN CÁ NHÂN</h3>
+        <div style="all:initial">
+        <h3 style="margin:.6em;text-decoration: underline 2px; text-underline-offset: 2px;">I/ THÔNG TIN CÁ NHÂN</h3>
             <div class="row">
-                <div class="field" style="width:45%">
+                <div class="field" style="width:8cm">
                     <label class="form-label">Phòng GDĐT:</label> 
                     <div class="form">{{form.phong_gddt }}</div>
                 </div>
-                <div class="field" style="width:45%">
+                <div class="field" style="width:8cm">
                     <label class="form-label">Trường tiểu học:</label> 
                     <div class="form">{{form.truong_tieu_hoc}}</div>
                 </div>
             </div>
             
             <div class="row">
-                <div class="field" style="width:50%">
+                <div class="field" style="width:8cm">
                     <label class="form-label">Họ và tên học sinh:</label> 
                     <div class="form">{{form.ho_va_ten }}</div>
                 </div>
-                <div class="field" style="width:21%">
+                <div class="field" style="width:3.65cm">
                     <label class="form-label">Lớp:</label> 
                     <div class="form">{{form.lop}}</div>
                 </div>
-                <div class="field" style="width:15%">
+                <div class="field" style="width:3.65cm">
                     <label class="form-label">Giới tính:</label> 
                     <div class="form">{{form.gioi_tinh}}</div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="field" style="width:26%">
+                <div class="field" style="width:5.1cm">
                     <label class="form-label">Tháng/ngày/năm sinh:</label> 
                     <div class="form">{{form.ngay_sinh }}</div>
                     <span style="font-size:3mm"><i>(Ghi đúng theo giấy khai sinh)</i></span>
                 </div>
-                <div class="field" style="width:30%">
+                <div class="field" style="width:5.1cm">
                     <label class="form-label">Nơi sinh:</label> 
                     <div class="form">{{form.noi_sinh}}</div>
                     <span style="font-size:3mm"><i>(Ghi tên Tỉnh/Thành phố)</i></span>
                 </div>
-                <div class="field" style="width:30%">
+                <div class="field" style="width:5.1cm">
                     <label class="form-label">Dân tộc:</label> 
                     <div class="form">{{form.dan_toc}}</div>
                     <span style="font-size:3mm"><i>&nbsp; </i></span>
                 </div>
             </div>
             <div class="row">
-                <div class="field">
-                    <span style="display: flex;flex-direction: column;"  class="form-label">Nơi thường trú:</span>
+                <div class="field" style="width:5.1cm">
+                    <span style="display: flex;flex-direction: column;font-size:4mm"  class="form-label">Nơi thường trú:</span>
                 </div>
-                <div class="field" style="width:32%">
+                <div class="field" style="width:5.1cm">
                     <label>Số nhà (ngõ/ngách):</label> 
                     <div class="form">{{form.noi_thuong_tru_so_nha }}</div>
                 </div>
-                <div class="field" style="width:33%">
+                <div class="field" style="width:5.1cm">
                     <label>Tổ (thôn/khu phố):</label> 
                     <div class="form">{{form.noi_thuong_tru_to}}</div>
                 </div>
@@ -123,37 +218,38 @@
 
 
             <div class="row">
-                <div class="field" style="width:29%">
+                <div class="field" style="width:5.1cm">
                     <label>Phường (xã/thị trấn):</label> 
                     <div class="form">{{form.noi_thuong_tru_phuong}}</div>
                 </div>
-                <div class="field" style="width:29%">
+                <div class="field" style="width:5.1cm">
                     <label>Quận (huyện):</label> 
                     <div class="form">{{form.noi_thuong_tru_quan_huyen}}</div>
                 </div>
-                <div class="field" style="width:29%">
+                <div class="field" style="width:5.1cm">
                     <label>Tỉnh (thành phố):</label> 
                     <div class="form">{{form.noi_thuong_tru_tinh}}</div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="field" style="width:29%">
+                <div class="field" style="width:5.1cm">
                     <label class="form-label">Số điện thoại:</label> 
                     <div class="form">{{form.sdt}}</div>
-                    <span style="font-size:3mm"><i>&nbsp; </i></span>
+                    <p style="font-size:3mm;margin: .3em;">&nbsp; </p>
                 </div>
-                <div class="field" style="width:29%">
+                <div class="field" style="width:5.1cm">
                     <label  class="form-label">Mã định danh: </label>
                     <div class="form">{{form.ma_dinh_danh}}</div>
-                    <span style="font-size:3mm"><i>(gồm 12 số do do cơ quan Công an cấp)</i></span>
+                    <p style="font-size:3mm;margin: .3em;"><i>(gồm 12 số do do cơ quan Công an cấp)</i></p>
                 </div>
-                <div class="field" style="width:29%">
+                <div class="field" style="width:5.1cm">
                     <label  class="form-label">Mã học sinh:</label>
-                    <input type="text" name="ma_hoc_sinh" value="{{application.user.username}}" readonly="readonly">
-                    <span style="font-size:3mm"><i>(gồm 10 số trên CSDL ngành GDĐT)</i></span>
+                    <div class="form"><input class="block w-full text-gray-900 border rounded sm:text-xs focus:ring-blue-500 focus:border-blue-500 light:placeholder-gray-400 light:text-white light:focus:ring-blue-500 light:focus:border-blue-500" type="text" name="ma_hoc_sinh" value="{{application.user.username}}" readonly="readonly"></div>
+                    <p style="font-size:3mm;margin: .3em;"><i>(gồm 10 số trên CSDL ngành GDĐT)</i></p>
                 </div>
             </div>
+        </div>
 
         <h3 style="margin:0.4em;text-decoration: underline 2px;    text-underline-offset: 2px;">II/ THÔNG TIN SƠ TUYỂN</h3>
         <h4 style="margin:0.2em">1. Khen thưởng cuối năm</h4>
@@ -251,7 +347,7 @@
                 </div>
             </center>
             <center>
-            <p><b><i>Cha/mẹ/người giám hộ của học sinh cam đoan các thông tin cung cấp trong đơn đăng ký dự tuyển trên là
+            <p style="margin-top:.5em;margin-bottom:.5em"><b><i>Cha/mẹ/người giám hộ của học sinh cam đoan các thông tin cung cấp trong đơn đăng ký dự tuyển trên là
                 đúng sự thật; nếu không đúng sẽ bị xử lý theo quy định hiện hành và hủy kết quả trúng tuyển.</i></b></p>
             </center>
                 
@@ -276,7 +372,7 @@
 
     <center>
         {% if not done %}
-        <button style="margin: 1em" type="submit" form="wrapper" onclick="!this.form && document.getElementById('wrapper').submit()">Nộp</button>
+        <button class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 light:border-blue-500 light:text-blue-500 light:hover:text-white light:hover:bg-blue-600 light:focus:ring-blue-800" style="margin: 1em" type="submit" form="wrapper" onclick="!this.form && document.getElementById('wrapper').submit()">Nộp</button>
         {% endif %}
     </center>
 
@@ -299,12 +395,13 @@
     const fileChosen = document.getElementById('file-chosen');
 
     actualBtn.addEventListener('change', function(){
-        fileChosen.textContent = "Đã chọn ảnh "
+        fileChosen.textContent = "Đã chọn ảnh"
         var output = document.getElementById('output');
+        console.log(this.files[0].name)
         output.src = URL.createObjectURL(this.files[0]);
         output.hidden = false;
         output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
+            URL.revokeObjectURL(output.src) // free memory
         }
     })
 </script>

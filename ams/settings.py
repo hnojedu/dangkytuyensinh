@@ -83,6 +83,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ams.wsgi.application'
 
+LOGIN_REDIRECT_URL = '/'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

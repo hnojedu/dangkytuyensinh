@@ -8,7 +8,7 @@
 li{
     list-style-type: none;
 }
-#application-form{
+body #application-form{
 
     height:297mm;
     width:210mm;
@@ -24,6 +24,7 @@ li{
     
     position: relative;
 }
+
 label, .form{
     display: flex;
     flex-direction: column;
@@ -35,7 +36,7 @@ label{
 }
 
 .field{
-    padding-left: 1.5em;
+    margin-left: .6cm;
     display:inline-block;
 }
 input,.row select{
@@ -75,6 +76,10 @@ input,.row select{
     margin: 0;
 }
 
+#part1 input, #part1 select{
+    border:1px solid black;
+}
+
 #picture{
     width: 30mm;
     height: 40mm;
@@ -86,5 +91,5 @@ input,.row select{
     text-transform: uppercase;
     font-weight: bold;
     text-align: center;
+    font-size:3mm;
 }
-

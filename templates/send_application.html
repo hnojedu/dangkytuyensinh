@@ -11,9 +11,8 @@ Tuyển sinh
 
     {% if done %}
     <center style="margin:1em">
-        <p style="margin:.5em">Bạn đã hoàn thành hồ sơ!</p>
-        <button onclick="print_form()">In hồ sơ</button>
-        <button><a href="{{application.id}}/edit" style="text-decoration: none;color: black;">Chỉnh sửa hồ sơ</a></button>
+        <button  onclick="print_form()" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">In hồ sơ</button>
+        <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"><a href="/application/{{application.id}}/edit" style="text-decoration: none;">Chỉnh sửa hồ sơ</a></button>
     </center>
     {% else%}
     <center>

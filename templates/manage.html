@@ -13,19 +13,19 @@
         text-decoration: none ;
         color: black;
     }
-
+/* 
     table, th, td {
         border: 1px solid black;
         border-collapse: collapse;
-    }
+    } */
 
-    td {
+    /* td {
         text-align: center;
-    }
+    } */
 
-    tbody tr:nth-child(odd){
+    /* tbody tr:nth-child(odd){
         background-color: rgb(238, 238, 238);
-    }
+    } */
 
     #wrapper {
         width: 100%;
@@ -47,49 +47,151 @@
         width:80%;
     }
 </style>
+<br>
 <div id = "wrapper">
     <div id = "first">
-        <div>
-            <table style="width:100%">
-                <thead>
+        
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500 light:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
                     <tr>
-                        <th>Mã hồ sơ</th>
-                        <th>Mã học sinh</th>
-                        <th>Tên học sinh</th>
-                        <th>Trường</th>
-                        <th>Tổng điểm</th>
-                        <th>Ngày nộp</th>
+                        <th scope="col" class="px-6 py-3">
+                            Mã hồ sơ
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <div class="flex items-center">
+                                Mã học sinh
+                                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <div class="flex items-center">
+                                Tên học sinh
+                                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <div class="flex items-center">
+                                Trường
+                                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <div class="flex items-center">
+                                Tổng điểm
+                                <a href="javascript:sort('tongdiem')"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <div class="flex items-center">
+                                Ngày nộp
+                                <a href="javascript:sort('ngaynop')"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only">Edit</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for application in applications %}
-                    <tr>
-                        <td><a href="{% url 'view' application.id%}" target="_blank">{{application.id}}</a></td>
-                        <td>{{application.user.username}}</td>
-                        <td>{{application.ho_va_ten}}</td>
-                        <td>{{application.truong_tieu_hoc}}</td>
-                        <td>{{application.tong_diem}}</td>
-                        <td>{{application.ngay_nop}}</td>
+                    <tr class="bg-white border-b light:bg-gray-800 light:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap light:text-white">
+                            {{application.id}}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{application.user.username}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{application.ho_va_ten}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{application.truong_tieu_hoc}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{application.tong_diem}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{application.ngay_nop}}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="{% url 'view' application.id%}"  class="font-medium text-blue-600 light:text-blue-500 hover:underline">Edit</a>
+                        </td>
                     </tr>
                     {% endfor %}
+                   
                 </tbody>
             </table>
         </div>
+
+        <center>
+        <nav aria-label="Page navigation example" class="items-center py-3">
+            <ul class="inline-flex items-center -space-x-px">
+                <li>
+                    <a  href="#" onclick="next({{prv_page}})" class="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 light:bg-gray-800 light:border-gray-700 light:text-gray-400 light:hover:bg-gray-700 light:hover:text-white">
+                        <span class="sr-only" style="visibility: hidden;">{{prv_page}}</span>
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                    </a>
+                </li>
+                    {% for page in pages%}
+                        <li>
+                        {% if selected_page == page %}
+                        <a href="#" onclick="next({{page}})" aria-current="page" class="z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 light:border-gray-700 light:bg-gray-700 light:text-white">{{page}}<span class="sr-only" style="visibility: hidden;">{{page}}</span></a>
+                        {% else %}
+                        <a href="#" onclick="next({{page}})" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 light:bg-gray-800 light:border-gray-700 light:text-gray-400 light:hover:bg-gray-700 light:hover:text-white">{{page}}<span class="sr-only" style="visibility: hidden;">{{page}}</span></a>
+                        </li>
+                        {% endif %}    
+                    {% endfor %}
+                <li>
+                <a href="#" onclick="next({{nxt_page}})" class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 light:bg-gray-800 light:border-gray-700 light:text-gray-400 light:hover:bg-gray-700 light:hover:text-white">
+                    <span class="sr-only" style="visibility: hidden;">{{nxt_page}}</span>
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </center>
     </div>
     
     <div id = "second">
-        <form method = "GET"  action="/manage">
-            <div>
-                <span>Tìm kiếm: {{form.search}} </span>
+        <form method = "GET"  action="/manage" id="search-form">
+            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only light:text-white">Tìm kiếm</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 light:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                {{form.search}}
+                <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800">Search</button>
             </div>
-            <div style="margin-top:.5em;margin-bottom:.5em">
-                <span>Sắp xếp: {{form.sort_by}} </span>
-            </div>
-            <center>
-            <button type="submit">Tìm kiếm</button>
-        </center>
+            <div style="visibility: hidden;">{{form.sort_by}}</div>
+            <div style="visibility: hidden;">{{form.page}}</div>
         </form>
     </div>
 </div>
+
+<script>
+    form = document.forms["search-form"];
+
+    function sort(type){
+        if(type == "tongdiem"){
+            if(form.elements["sort_by"].value == "-tong_diem")
+                form.elements["sort_by"].value = "tong_diem";
+            else
+                form.elements["sort_by"].value = "-tong_diem";
+        }else{
+            if(form.elements["sort_by"].value == "-ngay_nop")
+                form.elements["sort_by"].value = "ngay_nop";
+            else{
+                form.elements["sort_by"].value = "-ngay_nop";
+            }        
+        }
+        form.submit()
+    }
+
+    function next(page){
+        form.elements["page"].value = page
+        form.submit();
+    }
+</script>
 
 {% endblock %}

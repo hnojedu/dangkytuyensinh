@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 
 {% block body %}
-<form method="POST" action=""  enctype="multipart/form-data">
+<br>
+
+<form method="POST" action=""  enctype="multipart/form-data" class="px-10">
     {% csrf_token%}
-    {{form.as_p}}
-    <button type="submit">Gửi</button>
+    <label class="block mb-2 text-sm font-medium text-gray-900 light:text-white" for="file_input">Chọn file</label>
+    <div style="width:50%" >
+<input name="user" id="id_user" class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 light:text-gray-400 focus:outline-none light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400" id="large_size" type="file">
+        <button style="margin-top:1em" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 light:bg-blue-600 light:hover:bg-blue-700 focus:outline-none light:focus:ring-blue-800">Gửi</button>
+    </div>
 </form>
 {% endblock %}
