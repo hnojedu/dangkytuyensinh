@@ -103,8 +103,8 @@
 		<nav class="bg-white light:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 light:border-gray-600">
 			<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 			<a class="flex items-center">
-				<img src="{% static 'logo.png' %}" class="h-8 mr-3" alt="ams">
-				<span class="self-center text-2xl font-semibold whitespace-nowrap light:text-white">THPT CHUYÊN HÀ NỘI - AMSTERDAM</span>
+				<img src="{% static 'logo.png' %}" class="h-12 mr-3" alt="ams">
+				<span class="self-center text-xl font-semibold whitespace-nowrap light:text-white">THPT CHUYÊN HÀ NỘI - AMSTERDAM</span>
 			</a>
 		
 			{% if user.is_authenticated %}
@@ -157,9 +157,11 @@
 		  </nav>
 </header>
 
-<body style="margin-top: 80px;font-family: 'Roboto';">
-{% block body%}  
-{% endblock %}
+<body style="font-family: 'Roboto';">
+<div style="padding-top: 100px;">
+	{% block body%}  
+	{% endblock %}
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 
 

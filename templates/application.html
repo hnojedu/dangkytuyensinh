@@ -38,8 +38,14 @@
         {% endif %}
     {% endfor %} -->
 </div>
+{% if not done %}
+<center>
+<button  data-modal-target="staticModal" data-modal-toggle="staticModal"  class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 light:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" type="button">
+    Chọn ảnh 3x4
+</button>
+</center>
+{% endif  %}
 <div style="margin:0 auto;" id="application-form">
-
     <style>
         #wrapper{
             margin-left: 15mm;
@@ -66,6 +72,7 @@
     </style>
 
    
+
     <form action="" method="POST" id="wrapper" enctype="multipart/form-data" > 
         {% csrf_token %}
         {{ form.id }}      
@@ -74,10 +81,13 @@
 
         <div id="header">
             <div id = "picture" style="word-wrap: break-word; overflow: hidden;font-family: 'Roboto';" >
+                {% if not application.anh_3x4%}
+                <img id="output" hidden="false" style="border:none;width: 30mm;height: 40mm;"/>
+                {% else %}
+                <img src="{{application.anh_3x4.url}}" id="output" style="border:none;width: 30mm;height: 40mm;visibility: visible !important;" />
+                {% endif %}
                 {% if not done %}
-                    <button style="width: 30mm;height: 40mm;" data-modal-target="staticModal" data-modal-toggle="staticModal"  class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 light:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" type="button">
-                        Chọn ảnh 3x4
-                    </button>
+                    
                     
                     <!-- Main modal -->
                     <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -101,19 +111,11 @@
                                                 <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                                                 <p class="mb-2 text-sm text-gray-500 light:text-gray-400"><span class="font-semibold">Bấm vào để chọn ảnh</span> hoặc thả ảnh vào đây.</p>
                                                 <p class="mb-2 text-sm text-gray-500 light:text-gray-400" id="file-chosen">
-                                                    {% if not application.anh_3x4%}
                                                     Chưa chọn ảnh
-                                                    {% else %}
-                                                    Đã chọn ảnh
-                                                    {% endif%}
                                                 </p>
                                             </div>
                                             <div style="visibility:hidden" >{{form.anh_3x4}}</div>
-                                            {% if not application.anh_3x4%}
-                                            <img id="output" hidden="false" style="border:none;width: 30mm;height: 40mm;"/>
-                                            {% else %}
-                                            <img src="{{application.anh_3x4.url}}" id="output" style="border:none;width: 30mm;height: 40mm;visibility: visible !important;" />
-                                            {% endif %}
+                                            
                                         </label>
                                     </div> 
 
@@ -144,15 +146,13 @@
                     <img id="output" hidden="false" style="border:none;width: 15mm;height: 20mm;"/>
 
                     <div style="visibility:hidden" >{{form.anh_3x4}}</div> -->
-                {% else %}
-                    <img src="{{application.anh_3x4.url}}" style="width: 30mm;height: 40mm;">
                 {% endif %}
             </div>
             <div style="overflow: hidden;">
                 <center>
-                    <p style="margin:.2em;font-size:6mm;font-weight:bold;">PHIẾU ĐĂNG KÝ DỰ TUYỂN VÀO LỚP 6</p>
-                    <h5 style="margin:.2em;font-size:4mm;font-weight:bold;">TRƯỜNG TRUNG HỌC PHỔ THÔNG CHUYÊN HÀ NỘI - AMSTERDAM </h5>
-                    <h5 style="margin:.2em;font-size:4mm;font-weight:bold;">NĂM HỌC 2023-2024 </h5>
+                    <p style="margin:.2em;font-size:5mm;font-weight:bold;">PHIẾU ĐĂNG KÝ DỰ TUYỂN VÀO LỚP 6</p>
+                    <h5 style="margin:.2em;font-size:3.5mm;font-weight:bold;">TRƯỜNG TRUNG HỌC PHỔ THÔNG CHUYÊN HÀ NỘI - AMSTERDAM </h5>
+                    <h5 style="margin:.2em;font-size:mm;font-weight:bold;">NĂM HỌC 2023-2024 </h5>
                 </center> 
             </div>
         </div>
@@ -361,7 +361,6 @@
                         {% endif %}
                         <div><b>CHA/MẸ/NGƯỜI GIÁM HỘ CỦA HỌC SINH</b></div>
                         <div><i>(Ký, ghi họ tên)</i> </div>
-                        <div style="border-top:1px solid black; width:30mm;margin-top:1.5cm"></div>
                     </center>
 
               
@@ -395,7 +394,7 @@
     const fileChosen = document.getElementById('file-chosen');
 
     actualBtn.addEventListener('change', function(){
-        fileChosen.textContent = "Đã chọn ảnh"
+        fileChosen.textContent = "Đã chọn ảnh " + this.files[0].name
         var output = document.getElementById('output');
         console.log(this.files[0].name)
         output.src = URL.createObjectURL(this.files[0]);

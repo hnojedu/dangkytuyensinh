@@ -2,7 +2,9 @@
     @page { margin: 0; size: 210mm 297mm ;}
     body {  margin-left: 15mm;
         margin-right: 15mm;
-        margin-top: 10mm;}
+        padding: 0;
+        margin-top:10mm;
+        }
 }
 
 li{
