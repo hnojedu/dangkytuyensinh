@@ -38,13 +38,7 @@
         {% endif %}
     {% endfor %} -->
 </div>
-{% if not done %}
-<center>
-<button  data-modal-target="staticModal" data-modal-toggle="staticModal"  class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 light:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" type="button">
-    Chọn ảnh 3x4
-</button>
-</center>
-{% endif  %}
+
 <div style="margin:0 auto;" id="application-form">
     <style>
         #wrapper{
@@ -79,13 +73,22 @@
         <link rel="stylesheet" type="text/css" href="{% static 'application.css' %}">
 
 
-        <div id="header">
-            <div id = "picture" style="word-wrap: break-word; overflow: hidden;font-family: 'Roboto';" >
+        <div id="header" style="{% if not done %}height:5.5cm{% endif%}">
+            <div id = "picture" style="word-wrap: break-word;font-family: 'Roboto';">
                 {% if not application.anh_3x4%}
                 <img id="output" hidden="false" style="border:none;width: 30mm;height: 40mm;"/>
                 {% else %}
                 <img src="{{application.anh_3x4.url}}" id="output" style="border:none;width: 30mm;height: 40mm;visibility: visible !important;" />
                 {% endif %}
+               
+                {% if not done %}
+                    <center>
+                    <button style="visibility: visible !important;margin-top:.2em" data-modal-target="staticModal" data-modal-toggle="staticModal"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" type="button">
+                        Chọn ảnh
+                    </button>
+                    </center>
+                {% endif  %}
+                
                 {% if not done %}
                     
                     
