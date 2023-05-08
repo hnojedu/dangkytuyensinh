@@ -47,6 +47,7 @@ class ApplicationForm(forms.Form):
 
     sdt = forms.CharField(max_length = 20)
     ma_dinh_danh = forms.CharField(max_length = 12)
+    ma_hoc_sinh = forms.CharField(max_length = 10, widget=forms.TextInput(attrs={'readonly':'readonly'}))
 
     khen_thuong_1 = forms.CharField(widget=forms.Select(choices=KHEN_THUONG))
     khen_thuong_2 = forms.CharField(widget=forms.Select(choices=KHEN_THUONG))
@@ -89,6 +90,14 @@ class ApplicationForm(forms.Form):
             raise forms.ValidationError("Số điện thoại không hợp lệ.")
 
         return sdt
+
+    def clean_ma_hoc_sinh(self):
+        ma_hoc_sinh = self.cleaned_data['ma_hoc_sinh']
+
+        if len(ma_hoc_sinh) != 10 or not ma_hoc_sinh.isdigit():
+            raise forms.ValidationError("Mã học sinh không hợp lệ.")
+        
+        return ma_hoc_sinh
 
     def clean_ma_dinh_danh(self):
         ma_dinh_danh = self.cleaned_data['ma_dinh_danh']
@@ -178,3 +187,24 @@ class FileForm(forms.Form):
     user = forms.FileField(
         label='Select a file',
     )
+
+class StudentIDForm(forms.Form):
+    ma_hoc_sinh = forms.CharField(max_length = 10)
+
+    def clean_ma_hoc_sinh(self):
+        ma_hoc_sinh = self.cleaned_data['ma_hoc_sinh']
+        if len(ma_hoc_sinh) != 10 or not ma_hoc_sinh.isdigit():
+            raise forms.ValidationError("Mã học sinh không hợp lệ.")
+        
+        return ma_hoc_sinh
+
+class ApplicationSearchForm(forms.Form):
+    ma_ho_so = forms.CharField(max_length = 10)
+
+    def clean_ma_ho_so(self):
+        ma_ho_so = self.cleaned_data['ma_ho_so']
+        print(ma_ho_so)
+        if not Application.objects.filter(ma_ho_so = ma_ho_so).exists():
+            raise forms.ValidationError("Mã hồ sơ không tồn tại.")
+        
+        return ma_ho_so

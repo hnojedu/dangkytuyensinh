@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
+<div style="padding-top: 80px;">
 <style>
     #pagination {
         position: relative;
@@ -97,10 +98,10 @@
                     {% for application in applications %}
                     <tr class="bg-white border-b light:bg-gray-800 light:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap light:text-white">
-                            {{application.id}}
+                            {{application.ma_ho_so}}
                         </th>
                         <td class="px-6 py-4">
-                            {{application.user.username}}
+                            {{application.ma_hoc_sinh}}
                         </td>
                         <td class="px-6 py-4">
                             {{application.ho_va_ten}}
@@ -192,5 +193,5 @@
         form.submit();
     }
 </script>
-
+</div>
 {% endblock %}

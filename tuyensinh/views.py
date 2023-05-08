@@ -6,6 +6,7 @@ from django.views import View
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
 import pandas
+import secrets
 from django.template import RequestContext
 import secrets
 
@@ -49,6 +50,7 @@ def application_to_form(application, id = 0):
                 'ket_qua_5_su_dia': application.ket_qua_5_su_dia,
                 'ket_qua_5_khoa_hoc': application.ket_qua_5_khoa_hoc,
                 'ket_qua_5_tieng_anh': application.ket_qua_5_tieng_anh,
+                'ma_hoc_sinh': application.ma_hoc_sinh,
                 'id': id
     })
 
@@ -107,15 +109,10 @@ template_name = [
 ]
 
 def view_application(request, id, status = 0):
-    application = Application.objects.filter(id = id).first()
+    application = Application.objects.filter(ma_ho_so = id).first()
+
     if not application:
-        print(404)
         return handler404(request)
-
-    if not request.user.is_superuser and application.user != request.user:
-        return handler404(request)
-
-    print('weqwe')
 
     return render(request, template_name[request.user.is_superuser], {
         'form': application_to_form(application),
@@ -127,43 +124,32 @@ def view_application(request, id, status = 0):
     }) 
 
 class ApplicationView(View):
-    template_name = [
-        "send_application.html",
-        "send_application_admin.html"
-    ]
-        
-    def is_available(self, request, id):
-        if not id:
-            return Application(user=request.user)
+    tokens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-        application = Application.objects.filter(id = id).first()
+    def random_id(self):
+        result = None
+        while not result and Application.objects.filter(ma_ho_so = result).exists():
+            result = ''.join([secrets.choice(self.tokens) for i in range(8)])
 
-        if not request.user.is_authenticated:
-            return None
+        return result
 
-        if not application:
-            return None
-
-        if application.user != request.user and not request.user.is_superuser:
-            return None
-
-        return application
-
-
-    def get(self, request, id = 0):
-        if not request.user.is_authenticated:
-            return HttpResponseRedirect("login")
-
-        if not id and request.user.is_superuser:
+    def get(self, request, id):
+        print(id)
+        if len(id) != 8 and len(id) != 10:
             return handler404(request)
 
-        application = self.is_available(request, id)
+        application = Application.objects.filter(ma_ho_so = id).first()
+
+        if len(id) == 10:
+            if not id.isdigit():
+                return handler404(request)
+            application = Application()
+            application.ma_hoc_sinh = id
+            print(application.ma_hoc_sinh)
 
         if not application:
             return handler404(request)
 
-        print(template_name[request.user.is_superuser])
-        print("herer")
         return render(request, template_name[request.user.is_superuser], {
             'form': application_to_form(application, id),
             'user': request.user,
@@ -172,34 +158,34 @@ class ApplicationView(View):
             'application':application,
         })
 
-    def post(self, request, id = 0):
+
+    def post(self, request, id = ""):
         form = ApplicationForm(request.POST, request.FILES)
 
-        application = self.is_available(request, id)
+        if len(id) != 8 and len(id) != 10:
+            return handler404(request)
 
-        print(application)
+        application = Application.objects.filter(ma_ho_so = id).first()
 
-        if not application:
+
+
+        if len(id) == 10:
+            if not id.isdigit():
+                return handler404(request)
+            application = Application()
+
+        if (len(id) == 8 and not request.user.is_superuser) or (not application):
             return handler404(request)
 
         if form.is_valid():
             form = form.cleaned_data
 
-            form_id = form['id']
-            if form_id != id:
-                return handler404(request)
-            
-            #???
-            try:
-                application.user
-            except:
-                application.user = request.user
-
             image = form['anh_3x4']
             if image:
                 image._name = secrets.token_urlsafe(8) + "." + image.name.split('.')[-1]
                 application.anh_3x4 = image
-            
+
+            application.ma_ho_so = self.random_id() if len(id) == 10 else id
             application.phong_gddt = form['phong_gddt']
             application.truong_tieu_hoc = form['truong_tieu_hoc']
             application.lop = form['lop']
@@ -214,6 +200,7 @@ class ApplicationView(View):
             application.noi_thuong_tru_quan_huyen = form['noi_thuong_tru_quan_huyen']
             application.noi_thuong_tru_tinh = form['noi_thuong_tru_tinh']
             application.sdt = form['sdt']
+            application.ma_hoc_sinh = form['ma_hoc_sinh']
             application.ma_dinh_danh = form['ma_dinh_danh']
             application.khen_thuong_1 = form['khen_thuong_1']
             application.khen_thuong_2 = form['khen_thuong_2']
@@ -259,41 +246,51 @@ class ApplicationView(View):
 
             application.save()
 
-            return HttpResponseRedirect("/application/"+str(application.id)+"/1")
+            return HttpResponseRedirect("/application/"+str(application.ma_ho_so)+"/1")
 
-        return render(request, template_name[request.user.is_superuser], {
+        return render(request, "send_application.html", {
             'form': form,
             'done':False,
-            'user':request.user,
             'id':id,
             'application':application,
         })
 
-
-class UploadUserView(View):
+class StudentIDView(View):
     def get(self, request):
-        return render(request, 'upload.html', {
-            'form': FileForm()
+        return render(request, 'student_id.html', {
+            'form': StudentIDForm()
         })
 
     def post(self, request):
-        form = FileForm(request.POST, request.FILES)
-        
+        form = StudentIDForm(request.POST)
+
         if form.is_valid():
-            user = request.FILES['user']
-            fs = FileSystemStorage(location='')
-            filename = fs.save(user.name, user)
-            user_excel = pandas.read_excel(user.name, sheet_name=0)
-            
-            username = user_excel['Username'].tolist()
-            password = user_excel['Password'].tolist()
+            ma_hoc_sinh = form.cleaned_data['ma_hoc_sinh']
 
-            for i in range(0, len(username)):
-                User.objects.create_user(username = username[i], password = password[i])
+            return HttpResponseRedirect(f"/edit/{ma_hoc_sinh}")
 
-        return render(request, 'upload.html', {
-            'form': FileForm()
+        return render(request, 'student_id.html', {
+            'form': form
         })
+
+class SearchApplicationView(View):
+    def get(self, request):
+        return render(request, 'search.html', {
+            'form': ApplicationSearchForm()
+        })
+
+    def post(self, request):
+        form = ApplicationSearchForm(request.POST)
+
+        if form.is_valid():
+            ma_ho_so = form.cleaned_data['ma_ho_so']
+
+            return HttpResponseRedirect(f"/application/{ma_ho_so}")
+
+        return render(request, 'search.html', {
+            'form': form
+        })
+
 
 def handler404(request, *args, **argv):
     response = render(request, '404.html')

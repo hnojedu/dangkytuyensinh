@@ -6,21 +6,29 @@ Tuyển sinh
 {% endblock %}
 
 {% block body %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static 'printThis.js'%}"></script>
+    <div style="padding-top:80px">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script type="text/javascript" src="{% static 'printThis.js'%}"></script>
 
-    {% if done %}
-    <center style="margin:1em">
-        <button  onclick="print_form()" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">In hồ sơ</button>
-        <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"><a href="/application/{{application.id}}/edit" style="text-decoration: none;">Chỉnh sửa hồ sơ</a></button>
-    </center>
-    {% else%}
-    <center>
-        <p style="margin:.5em">Điền hồ sơ dưới đây:</p>
-    </center>
-    {% endif %}
+        {% if done %}
 
-    {% include "application.html" with form=form application=application done=done%}
         
-    
+        <center style="margin:1em">
+            <button  onclick="print_form()" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">In hồ sơ</button>
+            {% if user.is_superuser %}
+            <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"><a href="/application/{{application.id}}/edit" style="text-decoration: none;">Chỉnh sửa hồ sơ</a></button>
+            {% endif %}
+            {% if not user.is_superuser and done %}
+            <p>Hãy lưu lại mã hồ sơ <span style="font-family: 'Courier New', Courier, monospace;">{{application.ma_ho_so}}</span> (phân biệt chữ hoa, chữ thường) để đối chứng với nhà trường.</p>
+            {% endif %}
+        </center>
+        {% else%}
+        <center>
+            <p style="margin:.5em">Điền hồ sơ dưới đây:</p>
+        </center>
+        {% endif %}
+
+        {% include "application.html" with form=form application=application done=done%}
+            
+    </div>
 {% endblock %}

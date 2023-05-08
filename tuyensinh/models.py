@@ -14,9 +14,10 @@ class Application(models.Model):
         ("Nữ", "Nữ")
     )
 
+    ma_ho_so = models.CharField(null = True)
+
     # Thong tin ca nhan
     id = models.AutoField(primary_key = True)
-    user = models.OneToOneField(User, on_delete = models.CASCADE)
 
     phong_gddt = models.CharField(max_length = 255)
     truong_tieu_hoc = models.CharField(max_length = 255)
@@ -37,6 +38,7 @@ class Application(models.Model):
     sdt = models.CharField(max_length = 20)
 
     ma_dinh_danh = models.CharField(max_length = 12)
+    ma_hoc_sinh = models.CharField(max_length = 10,null=True)
 
     # Thong tin so tuyen
 
