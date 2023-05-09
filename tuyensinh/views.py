@@ -135,7 +135,7 @@ class ApplicationView(View):
     tokens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     def random_id(self):
-        result = None
+        result = ''.join([secrets.choice(self.tokens) for i in range(8)])
         while not result and Application.objects.filter(ma_ho_so = result).exists():
             result = ''.join([secrets.choice(self.tokens) for i in range(8)])
 
