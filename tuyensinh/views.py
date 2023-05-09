@@ -8,7 +8,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 import secrets
 from django.template import RequestContext
 from .generate_docx import *
-from docxcompose.composer import Composer
 from docx import Document
 import shutil
 
