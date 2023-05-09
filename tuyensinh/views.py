@@ -160,7 +160,7 @@ class ApplicationView(View):
         })
 
     def _generate_docx(self, ma_ho_so, application):
-        os.system(f"cp -rf ./media/docx/template ./media/docx/{ma_ho_so}.docx")
+        os.system(f"cp -rf ./template ./media/docx/{ma_ho_so}.docx")
         replacedict = {
             'phong_gddt': application.phong_gddt,
             'truong_tieu_hoc': application.truong_tieu_hoc,
