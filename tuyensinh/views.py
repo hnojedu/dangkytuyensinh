@@ -12,7 +12,6 @@ from django.template import RequestContext
 from .generate_docx import *
 from docx import Document
 import shutil
-from rest_framework.generics import CreateAPIView, ListAPIView, DestroyAPIView
 import os
 
 def application_to_form(application, id = 0):
@@ -129,7 +128,7 @@ def view_application(request, id, status = 0):
 def my_rate(group, request):
     if request.user.is_authenticated:
         return '1000/m'
-    return '3/d'
+    return '10/d'
 
 @method_decorator(ratelimit(key='user_or_ip', rate=my_rate, method='POST'), name='post')
 class ApplicationView(View):
