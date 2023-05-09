@@ -5,12 +5,14 @@ from datetime import datetime
 from django.views import View
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
 import secrets
 from django.template import RequestContext
 from .generate_docx import *
 from docx import Document
 import shutil
-
+from rest_framework.generics import CreateAPIView, ListAPIView, DestroyAPIView
 import os
 
 def application_to_form(application, id = 0):
@@ -124,6 +126,12 @@ def view_application(request, id, status = 0):
         'application':application
     }) 
 
+def my_rate(group, request):
+    if request.user.is_authenticated:
+        return '1000/m'
+    return '3/d'
+
+@method_decorator(ratelimit(key='user_or_ip', rate=my_rate, method='POST'), name='post')
 class ApplicationView(View):
     tokens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
