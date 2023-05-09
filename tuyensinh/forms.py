@@ -33,8 +33,6 @@ class ApplicationForm(forms.Form):
     lop = forms.CharField(max_length = 255)
     ho_va_ten = forms.CharField(max_length = 255)
     gioi_tinh = forms.CharField(widget=forms.Select(choices=GIOI_TINH), max_length = 3)
-    id = forms.IntegerField(widget=forms.HiddenInput())
-
     ngay_sinh = forms.DateTimeField(widget=DateInput(format=('%Y-%m-%d'),attrs={'type': 'date'}),input_formats=['%d-%m-%Y'],required=True)
     noi_sinh = forms.CharField(max_length = 255)
     dan_toc = forms.CharField(max_length = 255)
@@ -48,6 +46,7 @@ class ApplicationForm(forms.Form):
     sdt = forms.CharField(max_length = 20)
     ma_dinh_danh = forms.CharField(max_length = 12)
     ma_hoc_sinh = forms.CharField(max_length = 10, widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    ma_ho_so = forms.CharField(required=False)
 
     khen_thuong_1 = forms.CharField(widget=forms.Select(choices=KHEN_THUONG))
     khen_thuong_2 = forms.CharField(widget=forms.Select(choices=KHEN_THUONG))
@@ -107,17 +106,6 @@ class ApplicationForm(forms.Form):
 
         return ma_dinh_danh
 
-    def clean_anh_3x4(self):
-        anh_3x4 = self.cleaned_data['anh_3x4']
-        user = self.cleaned_data['id']
-
-        application =  Application.objects.filter(id = int(user)).first()
-
-        if not application and not anh_3x4:
-            raise forms.ValidationError("Bạn chưa tải ảnh lên.")
-
-        return anh_3x4
-
     def valid_score(self, s):
         return 0 <= s <= 10
 
@@ -141,6 +129,13 @@ class ApplicationForm(forms.Form):
         ket_qua_5_su_dia = cleaned_data.get('ket_qua_5_su_dia')
         ket_qua_5_khoa_hoc = cleaned_data.get('ket_qua_5_khoa_hoc')
         ket_qua_5_tieng_anh = cleaned_data.get('ket_qua_5_tieng_anh')
+
+        anh_3x4 = cleaned_data.get('anh_3x4')
+        ma_ho_so = cleaned_data.get('ma_ho_so')
+
+        if not anh_3x4 and not Application.objects.filter(ma_ho_so = ma_ho_so).exists():
+            raise forms.ValidationError("Bạn chưa tải ảnh lên.")
+        
 
         if not (self.valid_score(ket_qua_1_toan) \
             and self.valid_score(ket_qua_1_tieng_viet) \
@@ -178,7 +173,7 @@ class SearchForm(forms.Form):
 
     search = forms.CharField(label='Tìm kiếm', max_length = 64, required = False,widget=forms.TextInput(attrs={
         'class': 'block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400 light:text-white light:focus:ring-blue-500 light:focus:border-blue-500',
-        'placeholder': 'Tìm theo tên hoặc mã học sinh'
+        'placeholder': 'Tìm theo tên hoặc mã hồ sơ'
     }))
     sort_by = forms.CharField(label='Sắp xếp', required=False)
     page = forms.CharField(required=False)

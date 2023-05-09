@@ -51,7 +51,6 @@
 <br>
 <div id = "wrapper">
     <div id = "first">
-        
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 light:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
@@ -116,7 +115,7 @@
                             {{application.ngay_nop}}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a href="{% url 'view' application.id%}"  class="font-medium text-blue-600 light:text-blue-500 hover:underline">Edit</a>
+                            <a href="{% url 'view' application.ma_ho_so%}" target="_blank" class="font-medium text-blue-600 light:text-blue-500 hover:underline">Edit</a>
                         </td>
                     </tr>
                     {% endfor %}

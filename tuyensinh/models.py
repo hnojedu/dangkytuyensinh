@@ -13,6 +13,11 @@ class Application(models.Model):
         ("Nam", "Nam"),
         ("Nữ", "Nữ")
     )
+    
+    class Meta:
+        indexes = [
+            models.Index(fields = ['ma_ho_so'])
+        ]
 
     ma_ho_so = models.CharField(null = True)
 

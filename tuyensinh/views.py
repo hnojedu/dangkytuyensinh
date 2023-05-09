@@ -5,10 +5,14 @@ from datetime import datetime
 from django.views import View
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
-import pandas
 import secrets
 from django.template import RequestContext
-import secrets
+from .generate_docx import *
+from docxcompose.composer import Composer
+from docx import Document
+import shutil
+
+import os
 
 def application_to_form(application, id = 0):
     return ApplicationForm(initial={
@@ -51,6 +55,7 @@ def application_to_form(application, id = 0):
                 'ket_qua_5_khoa_hoc': application.ket_qua_5_khoa_hoc,
                 'ket_qua_5_tieng_anh': application.ket_qua_5_tieng_anh,
                 'ma_hoc_sinh': application.ma_hoc_sinh,
+                'ma_ho_so': application.ma_ho_so,
                 'id': id
     })
 
@@ -79,10 +84,8 @@ def manage_application(request):
     search_by_id = Application.objects.none()
     search_by_name = Application.objects.none()
     if search != '':
-        if search.isdigit():
-            search_by_id = Application.objects.filter(id = int(search))
-        else:
-            search_by_name = Application.objects.filter(ho_va_ten__icontains=search)
+        search_by_id = Application.objects.filter(ma_ho_so = search)
+        search_by_name = Application.objects.filter(ho_va_ten__icontains=search)
     else:
         search_by_name = Application.objects.all()
 
@@ -91,8 +94,7 @@ def manage_application(request):
     if order_by not in ["ngay_nop", "-tong_diem", "-ngay_nop", "tong_diem"]:
         return handler404(request)
 
-
-    applications = (search_by_id | search_by_name).order_by(order_by)[(page - 1) * 100 : 100]
+    applications = (search_by_id | search_by_name).order_by(order_by)[(page - 1) * 100 : page * 100]
 
     return render(request, "manage.html", {
         'applications':applications,
@@ -158,6 +160,69 @@ class ApplicationView(View):
             'application':application,
         })
 
+    def _generate_docx(self, ma_ho_so, application):
+        os.system(f"cp -rf ./media/docx/template ./media/docx/{ma_ho_so}.docx")
+        replacedict = {
+            'phong_gddt': application.phong_gddt,
+            'truong_tieu_hoc': application.truong_tieu_hoc,
+            'lop': application.lop,
+            'ho_va_ten': application.ho_va_ten,
+            'noi_sinh': application.noi_sinh,
+            'dan_toc': application.dan_toc,
+            'so_nha': application.noi_thuong_tru_so_nha,
+            'tototo': application.noi_thuong_tru_to,
+            'phuong': application.noi_thuong_tru_phuong,
+            'quan_huyen': application.noi_thuong_tru_quan_huyen,
+            'tinh': application.noi_thuong_tru_tinh,
+            'sdt': application.sdt,
+            'ma_hoc_sinh': application.ma_hoc_sinh,
+            'ma_dinh_danh': application.ma_dinh_danh,
+            'kt1': application.khen_thuong_1,
+            'kt2': application.khen_thuong_2,
+            'kt3': application.khen_thuong_3,
+            'kt4': application.khen_thuong_4,
+            'kt5': application.khen_thuong_5,
+            '1to': str(application.ket_qua_1_toan),
+            '1tv': str(application.ket_qua_1_tieng_viet),
+            '2to': str(application.ket_qua_2_toan),
+            '2tv': str(application.ket_qua_2_tieng_viet),
+            '3to': str(application.ket_qua_3_toan),
+            '3tv': str(application.ket_qua_3_tieng_viet),
+            '3ta': str(application.ket_qua_3_tieng_anh),
+            '4to': str(application.ket_qua_4_toan),
+            '4tv': str(application.ket_qua_4_tieng_viet),
+            '4kh': str(application.ket_qua_4_khoa_hoc),
+            '4sd': str(application.ket_qua_4_su_dia),
+            '4ta': str(application.ket_qua_4_tieng_anh),
+            '5to': str(application.ket_qua_5_toan),
+            '5tv': str(application.ket_qua_5_tieng_viet),
+            '5sd': str(application.ket_qua_5_su_dia),
+            '5kh': str(application.ket_qua_5_khoa_hoc),
+            '5ta': str(application.ket_qua_5_tieng_anh),
+            'tong_diem': str(application.tong_diem),
+            'ma_hoc_sinh': application.ma_hoc_sinh,
+            'td1': str(application.ket_qua_1_toan + application.ket_qua_1_tieng_viet),
+            'td2': str(application.ket_qua_2_toan + application.ket_qua_2_tieng_viet),
+            'td3': str(application.ket_qua_3_toan + application.ket_qua_3_tieng_viet + application.ket_qua_3_tieng_anh),
+            'td4': str(application.ket_qua_4_toan + application.ket_qua_4_tieng_viet + application.ket_qua_4_tieng_anh + application.ket_qua_4_khoa_hoc + application.ket_qua_4_su_dia),
+            'td5': str(application.ket_qua_5_toan + application.ket_qua_5_tieng_viet + application.ket_qua_5_tieng_anh + application.ket_qua_5_khoa_hoc + application.ket_qua_5_su_dia),
+        }
+
+        if application.gioi_tinh == "Nam":
+            replacedict['g1'] = 'X'
+            replacedict['g2'] = ''
+        else:
+            replacedict['g2'] = 'X'
+            replacedict['g1'] = ''
+
+        replacedict['mm'] = application.ngay_sinh.month
+        replacedict['dd'] = application.ngay_sinh.day
+        replacedict['yyyy'] = application.ngay_sinh.year
+
+        replacedict['mmm'] = datetime.now().month
+        replacedict['ddd'] = datetime.now().day
+
+        generate(replacedict, f"./media/docx/{ma_ho_so}.docx")
 
     def post(self, request, id = ""):
         form = ApplicationForm(request.POST, request.FILES)
@@ -166,8 +231,6 @@ class ApplicationView(View):
             return handler404(request)
 
         application = Application.objects.filter(ma_ho_so = id).first()
-
-
 
         if len(id) == 10:
             if not id.isdigit():
@@ -243,7 +306,7 @@ class ApplicationView(View):
                                     +application.ket_qua_5_khoa_hoc \
                                     +application.ket_qua_5_tieng_anh
 
-
+            self._generate_docx(application.ma_ho_so, application)
             application.save()
 
             return HttpResponseRedirect("/application/"+str(application.ma_ho_so)+"/1")
@@ -291,6 +354,20 @@ class SearchApplicationView(View):
             'form': form
         })
 
+class PrintView(View):
+    def get(self, request):
+        if not request.user.is_superuser:
+            return handler404(request)
+        return render(request, 'print_application.html', {})
+
+    def post(self, request):
+        print("123")
+        if not request.user.is_superuser:
+            return handler404(request)
+
+
+        shutil.make_archive("./media/tatcahoso", 'zip', './media/docx')
+        return HttpResponseRedirect("./media/tatcahoso.zip")
 
 def handler404(request, *args, **argv):
     response = render(request, '404.html')

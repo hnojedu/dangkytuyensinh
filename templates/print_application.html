@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Tuyển sinh
+{% endblock %}
+
+{% block body %}
+<center>
+    
+<div style="margin-top: 100px;" >
+    <form action = "" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Tải hồ sơ</button>
+</form>
+</div>
+</center>
+{% endblock %}
