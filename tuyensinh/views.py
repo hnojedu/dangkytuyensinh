@@ -258,7 +258,7 @@ class ApplicationView(View):
             application.phong_gddt = form['phong_gddt']
             application.truong_tieu_hoc = form['truong_tieu_hoc']
             application.lop = form['lop']
-            application.ho_va_ten = form['ho_va_ten']
+            application.ho_va_ten = form['ho_va_ten'].upper()
             application.gioi_tinh = form['gioi_tinh']
             application.ngay_sinh = form['ngay_sinh']
             application.noi_sinh = form['noi_sinh']
