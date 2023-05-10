@@ -164,6 +164,7 @@ class ApplicationForm(forms.Form):
             visible.field.widget.attrs['class'] = 'block w-full text-gray-900 border rounded sm:text-xs focus:ring-blue-500 focus:border-blue-500 light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400 light:text-white light:focus:ring-blue-500 light:focus:border-blue-500'
             visible.field.widget.attrs['placeholder'] = " "
             #visible.field.widget.attrs['class'] = "cleanslate"
+
 class SearchForm(forms.Form):
     SAP_XEP = (
         ("ngay_nop", "Ngày nộp"),
@@ -194,11 +195,10 @@ class StudentIDForm(forms.Form):
         return ma_hoc_sinh
 
 class ApplicationSearchForm(forms.Form):
-    ma_ho_so = forms.CharField(max_length = 10)
+    ma_ho_so = forms.CharField()
 
     def clean_ma_ho_so(self):
         ma_ho_so = self.cleaned_data['ma_ho_so']
-        print(ma_ho_so)
         if not Application.objects.filter(ma_ho_so = ma_ho_so).exists():
             raise forms.ValidationError("Mã hồ sơ không tồn tại.")
         

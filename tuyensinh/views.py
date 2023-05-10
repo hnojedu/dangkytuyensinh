@@ -135,11 +135,7 @@ class ApplicationView(View):
     tokens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     def random_id(self):
-        result = ''.join([secrets.choice(self.tokens) for i in range(8)])
-        while Application.objects.filter(ma_ho_so = result).exists():
-            result = ''.join([secrets.choice(self.tokens) for i in range(8)])
-
-        return result
+        return ''.join([secrets.choice(self.tokens) for i in range(6)])
 
     def get(self, request, id):
         print(id)
@@ -258,7 +254,7 @@ class ApplicationView(View):
                 image._name = secrets.token_urlsafe(8) + "." + image.name.split('.')[-1]
                 application.anh_3x4 = image
 
-            application.ma_ho_so = self.random_id() if len(id) == 10 else id
+            
             application.phong_gddt = form['phong_gddt']
             application.truong_tieu_hoc = form['truong_tieu_hoc']
             application.lop = form['lop']
@@ -315,7 +311,8 @@ class ApplicationView(View):
                                     +application.ket_qua_5_su_dia \
                                     +application.ket_qua_5_khoa_hoc \
                                     +application.ket_qua_5_tieng_anh
-
+            application.save()
+            application.ma_ho_so = (str(application.pk).zfill(5) + '.' + self.random_id()) if len(id) == 10 else id
             self._generate_docx(application.ma_ho_so, application)
             application.save()
 
@@ -354,10 +351,9 @@ class SearchApplicationView(View):
 
     def post(self, request):
         form = ApplicationSearchForm(request.POST)
-
+        print(form)
         if form.is_valid():
             ma_ho_so = form.cleaned_data['ma_ho_so']
-
             return HttpResponseRedirect(f"/application/{ma_ho_so}")
 
         return render(request, 'search.html', {
