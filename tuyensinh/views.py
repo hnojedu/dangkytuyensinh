@@ -128,7 +128,7 @@ def view_application(request, id, status = 0):
 def my_rate(group, request):
     if request.user.is_authenticated:
         return '1000/m'
-    return '10/d'
+    return '15/d'
 
 @method_decorator(ratelimit(key='user_or_ip', rate=my_rate, method='POST'), name='post')
 class ApplicationView(View):
@@ -136,7 +136,7 @@ class ApplicationView(View):
 
     def random_id(self):
         result = ''.join([secrets.choice(self.tokens) for i in range(8)])
-        while not result and Application.objects.filter(ma_ho_so = result).exists():
+        while Application.objects.filter(ma_ho_so = result).exists():
             result = ''.join([secrets.choice(self.tokens) for i in range(8)])
 
         return result
@@ -154,6 +154,9 @@ class ApplicationView(View):
             application = Application()
             application.ma_hoc_sinh = id
             print(application.ma_hoc_sinh)
+        elif len(id) == 8:
+            if not request.user.is_superuser:
+                return handler404(request)
 
         if not application:
             return handler404(request)
@@ -169,6 +172,7 @@ class ApplicationView(View):
     def _generate_docx(self, ma_ho_so, application):
         os.system(f"cp -rf ./template ./media/docx/{ma_ho_so}.docx")
         replacedict = {
+            'ma_ho_so': application.ma_ho_so,
             'phong_gddt': application.phong_gddt,
             'truong_tieu_hoc': application.truong_tieu_hoc,
             'lop': application.lop,

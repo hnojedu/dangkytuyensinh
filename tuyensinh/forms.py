@@ -5,9 +5,9 @@ from django.conf import settings
 from .models import Application
 
 def file_size(value): # add this to some file where you can import it from
-    limit = 1024 * 1024
+    limit = 1024 * 1024 * 2
     if value.size > limit:
-        raise forms.ValidationError('Ảnh không được vượt quá 1 Megabyte.')
+        raise forms.ValidationError('Ảnh không được vượt quá 2 Megabyte.')
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -77,7 +77,7 @@ class ApplicationForm(forms.Form):
    
     ket_qua_5_tieng_anh = forms.FloatField()
     
-    anh_3x4 = forms.ImageField(required = False,widget=forms.FileInput(attrs=({'onchange':'loadFile(event)'})))
+    anh_3x4 = forms.ImageField(required = False,widget=forms.FileInput(attrs=({'onchange':'loadFile(event)'})),validators=[file_size])
 
     def clean_sdt(self):
         sdt = self.cleaned_data['sdt']

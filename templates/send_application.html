@@ -19,7 +19,7 @@ Tuyển sinh
             <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"><a href="/application/{{application.ma_ho_so}}/edit" style="text-decoration: none;">Chỉnh sửa hồ sơ</a></button>
             {% endif %}
             {% if not user.is_superuser and done %}
-            <p>Hãy lưu lại mã hồ sơ <span style="font-family: 'Courier New', Courier, monospace;">{{application.ma_ho_so}}</span> (phân biệt chữ hoa, chữ thường) để đối chứng với nhà trường.</p>
+            <p style="font-size: large;font-weight: 800;">Hãy lưu lại mã hồ sơ <span style="letter-spacing: .2em; font-family: 'Courier New', Courier, monospace;color:red;font-size: larger;">{{application.ma_ho_so}}</span>(phân biệt chữ hoa, chữ thường) để đối chứng với nhà trường.</p>
             {% endif %}
         </center>
         {% else%}
