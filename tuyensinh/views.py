@@ -11,12 +11,12 @@ import secrets
 from django.template import RequestContext
 from .generate_docx import *
 from docx import Document
+import threading
 import shutil
 import os
 
 def application_to_form(application, id = 0):
     return ApplicationForm(initial={
-                'anh_3x4': application.anh_3x4,
                 'phong_gddt': application.phong_gddt,
                 'truong_tieu_hoc': application.truong_tieu_hoc,
                 'lop': application.lop,
@@ -110,63 +110,8 @@ template_name = [
     "send_application.html"
 ]
 
-def view_application(request, id, status = 0):
-    application = Application.objects.filter(ma_ho_so = id).first()
-
-    if not application:
-        return handler404(request)
-
-    return render(request, template_name[request.user.is_superuser], {
-        'form': application_to_form(application),
-        'user':request.user,
-        'done': True,
-        'id':id,
-        'status': status,
-        'application':application
-    }) 
-
-def my_rate(group, request):
-    if request.user.is_authenticated:
-        return '1000/m'
-    return '15/d'
-
-@method_decorator(ratelimit(key='user_or_ip', rate=my_rate, method='POST'), name='post')
-class ApplicationView(View):
-    tokens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
-    def random_id(self):
-        return ''.join([secrets.choice(self.tokens) for i in range(6)])
-
-    def get(self, request, id):
-        print(id)
-        if len(id) != 8 and len(id) != 10:
-            return handler404(request)
-
-        application = Application.objects.filter(ma_ho_so = id).first()
-
-        if len(id) == 10:
-            if not id.isdigit():
-                return handler404(request)
-            application = Application()
-            application.ma_hoc_sinh = id
-            print(application.ma_hoc_sinh)
-        elif len(id) == 8:
-            if not request.user.is_superuser:
-                return handler404(request)
-
-        if not application:
-            return handler404(request)
-
-        return render(request, template_name[request.user.is_superuser], {
-            'form': application_to_form(application, id),
-            'user': request.user,
-            'done': False,
-            'id': id,
-            'application':application,
-        })
-
-    def _generate_docx(self, ma_ho_so, application):
-        os.system(f"cp -rf ./template ./media/docx/{ma_ho_so}.docx")
+def _generate_docx(application):
+        os.system(f"cp -rf ./template ./media/docx/{application.ma_ho_so}.docx")
         replacedict = {
             'ma_ho_so': application.ma_ho_so,
             'phong_gddt': application.phong_gddt,
@@ -228,7 +173,78 @@ class ApplicationView(View):
         replacedict['mmm'] = datetime.now().month
         replacedict['ddd'] = datetime.now().day
 
-        generate(replacedict, f"./media/docx/{ma_ho_so}.docx")
+        generate(replacedict, f"./media/docx/{application.ma_ho_so}.docx")
+
+def get_status(request, ma_ho_so):
+    application = Application.objects.filter(ma_ho_so = ma_ho_so).first()
+    if not application:
+        return HttpResponse(False)
+    _generate_docx(application)
+    application.generated = True
+    application.save()
+    return HttpResponse(application.generated)
+
+def view_application(request, id, status = 0):
+    application = Application.objects.filter(ma_ho_so = id).first()
+
+    if not application:
+        return handler404(request)
+    
+    if not application.generated:
+        return render(request, "load_application.html", {
+            'application':application.ma_ho_so,
+        }) 
+
+    return render(request, "send_application.html", {
+        'form': application_to_form(application),
+        'user':request.user,
+        'done': True,
+        'id':id,
+        'status': status,
+        'application':application,
+    }) 
+
+def my_rate(group, request):
+    if request.user.is_authenticated:
+        return '1000/m'
+    return '15/d'
+
+@method_decorator(ratelimit(key='user_or_ip', rate=my_rate, method='POST'), name='post')
+class ApplicationView(View):
+    tokens = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    def random_id(self):
+        return ''.join([secrets.choice(self.tokens) for i in range(4)])
+
+    def get(self, request, id):
+        print(id)
+        if len(id) != 8 and len(id) != 10:
+            return handler404(request)
+
+        application = Application.objects.filter(ma_ho_so = id).first()
+
+        if len(id) == 10:
+            if not id.isdigit():
+                return handler404(request)
+            application = Application()
+            application.ma_hoc_sinh = id
+            print(application.ma_hoc_sinh)
+        elif len(id) == 8:
+            if not request.user.is_superuser:
+                return handler404(request)
+
+        if not application:
+            return handler404(request)
+
+        return render(request, "send_application.html", {
+            'form': application_to_form(application, id),
+            'user': request.user,
+            'done': False,
+            'id': id,
+            'application':application,
+        })
+
+    
 
     def post(self, request, id = ""):
         form = ApplicationForm(request.POST, request.FILES)
@@ -248,12 +264,6 @@ class ApplicationView(View):
 
         if form.is_valid():
             form = form.cleaned_data
-
-            image = form['anh_3x4']
-            if image:
-                image._name = secrets.token_urlsafe(8) + "." + image.name.split('.')[-1]
-                application.anh_3x4 = image
-
             
             application.phong_gddt = form['phong_gddt']
             application.truong_tieu_hoc = form['truong_tieu_hoc']
@@ -311,9 +321,10 @@ class ApplicationView(View):
                                     +application.ket_qua_5_su_dia \
                                     +application.ket_qua_5_khoa_hoc \
                                     +application.ket_qua_5_tieng_anh
+            
+
             application.save()
-            application.ma_ho_so = (str(application.pk).zfill(5) + '.' + self.random_id()) if len(id) == 10 else id
-            self._generate_docx(application.ma_ho_so, application)
+            application.ma_ho_so = (str(application.pk).zfill(4) + '-' + self.random_id()) if len(id) == 10 else id
             application.save()
 
             return HttpResponseRedirect("/application/"+str(application.ma_ho_so)+"/1")

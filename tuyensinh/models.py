@@ -80,4 +80,4 @@ class Application(models.Model):
     tong_diem = models.FloatField(null = True)
 
     ngay_nop = models.DateField(auto_now_add = True, null = True)
-    anh_3x4 = models.ImageField(upload_to="anh_3x4",null=True)
+    generated = models.BooleanField(default = False)

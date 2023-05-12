@@ -19,7 +19,6 @@ class ApplicationForm(forms.Form):
         }
 
     KHEN_THUONG = (
-        ("K", "K"),
         ("HTT", "HTT"),
         ("HTXS", "HTXS"),
     )
@@ -77,8 +76,6 @@ class ApplicationForm(forms.Form):
    
     ket_qua_5_tieng_anh = forms.FloatField()
     
-    anh_3x4 = forms.ImageField(required = False,widget=forms.FileInput(attrs=({'onchange':'loadFile(event)'})),validators=[file_size])
-
     def clean_sdt(self):
         sdt = self.cleaned_data['sdt']
 
@@ -130,12 +127,7 @@ class ApplicationForm(forms.Form):
         ket_qua_5_khoa_hoc = cleaned_data.get('ket_qua_5_khoa_hoc')
         ket_qua_5_tieng_anh = cleaned_data.get('ket_qua_5_tieng_anh')
 
-        anh_3x4 = cleaned_data.get('anh_3x4')
         ma_ho_so = cleaned_data.get('ma_ho_so')
-
-        if not anh_3x4 and not Application.objects.filter(ma_ho_so = ma_ho_so).exists():
-            raise forms.ValidationError("Bạn chưa tải ảnh lên.")
-        
 
         if not (self.valid_score(ket_qua_1_toan) \
             and self.valid_score(ket_qua_1_tieng_viet) \
@@ -155,6 +147,27 @@ class ApplicationForm(forms.Form):
             and self.valid_score(ket_qua_5_khoa_hoc) \
             and self.valid_score(ket_qua_5_tieng_anh)):
             raise forms.ValidationError("Điểm phải nằm trong khoảng 0.0 đến 10.0.")
+
+        tong_diem = ket_qua_1_toan \
+                                    +ket_qua_1_tieng_viet \
+                                    +ket_qua_2_toan \
+                                    +ket_qua_2_tieng_viet \
+                                    +ket_qua_3_toan \
+                                    +ket_qua_3_tieng_viet \
+                                    +ket_qua_3_tieng_anh \
+                                    +ket_qua_4_toan \
+                                    +ket_qua_4_tieng_viet \
+                                    +ket_qua_4_khoa_hoc \
+                                    +ket_qua_4_su_dia \
+                                    +ket_qua_4_tieng_anh \
+                                    +ket_qua_5_toan \
+                                    +ket_qua_5_tieng_viet \
+                                    +ket_qua_5_su_dia \
+                                    +ket_qua_5_khoa_hoc \
+                                    +ket_qua_5_tieng_anh
+
+        if(tong_diem < 166.999999):
+            raise forms.ValidationError("Hồ sơ không đạt tiêu chuẩn! (Tổng điểm phải đạt ít nhất 167 điểm).")
 
         return cleaned_data
 
@@ -199,7 +212,7 @@ class ApplicationSearchForm(forms.Form):
 
     def clean_ma_ho_so(self):
         ma_ho_so = self.cleaned_data['ma_ho_so']
-        if not Application.objects.filter(ma_ho_so = ma_ho_so).exists():
+        if not objects.filter(ma_ho_so = ma_ho_so).exists():
             raise forms.ValidationError("Mã hồ sơ không tồn tại.")
         
         return ma_ho_so

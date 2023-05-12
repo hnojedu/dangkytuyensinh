@@ -10,7 +10,8 @@ urlpatterns = [
     path("application/<str:id>/<int:status>", views.view_application, name="view"),
     path("application/<str:id>/edit", views.ApplicationView.as_view(), name="edit_admin"),
     path("search", views.SearchApplicationView.as_view(), name="search"),
-    path("print", views.PrintView.as_view(), name="print")
+    path("print", views.PrintView.as_view(), name="print"),
+    path("get_status/<str:ma_ho_so>", views.get_status, name="get_status")
 ]
 
 handler404 = 'tuyensinh.views.handler404'

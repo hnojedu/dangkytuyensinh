@@ -91,32 +91,3 @@
         {% endif %}
     </center>
 
-{% if done %}
-<script>
-    $(':input').attr('readonly','readonly');
-    $('select').prop("disabled", true);
-
-    function print_form(){
-        $('#wrapper').printThis({importStyle: false,importCSS:false, loadCSS:["{% static 'application.css' %}"]});
-    }
-</script>
-{% endif %}
-
-
-
-<script>
-    const actualBtn = document.getElementById('id_anh_3x4');
-
-    const fileChosen = document.getElementById('file-chosen');
-
-    actualBtn.addEventListener('change', function(){
-        fileChosen.textContent = "Đã chọn ảnh " + this.files[0].name
-        var output = document.getElementById('output');
-        console.log(this.files[0].name)
-        output.src = URL.createObjectURL(this.files[0]);
-        output.hidden = false;
-        output.onload = function() {
-            URL.revokeObjectURL(output.src) // free memory
-        }
-    })
-</script>
