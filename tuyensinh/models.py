@@ -34,8 +34,8 @@ class Application(models.Model):
     noi_sinh = models.CharField(max_length = 255)
     dan_toc = models.CharField(max_length = 255)
 
-    noi_thuong_tru_so_nha = models.CharField(max_length = 255)
-    noi_thuong_tru_to = models.CharField(max_length = 255)
+    noi_thuong_tru_so_nha = models.CharField(max_length = 255,null=True)
+    noi_thuong_tru_to = models.CharField(max_length = 255,null=True)
     noi_thuong_tru_phuong = models.CharField(max_length = 255)
     noi_thuong_tru_quan_huyen = models.CharField(max_length = 255)
     noi_thuong_tru_tinh = models.CharField(max_length = 255)

@@ -26,18 +26,50 @@ class ApplicationForm(forms.Form):
         ("Nam", "Nam"),
         ("Nữ", "Nữ"),
     )
+    PHONG_GDDT = (
+        ("Ba Đình","Ba Đình"),
+        ("Bà Trưng","Bà Trưng"),
+        ("Ba Vì","Ba Vì"),
+        ("Cầu Giấy","Cầu Giấy"),
+        ("Chương Mỹ","Chương Mỹ"),
+        ("Đan Phượng","Đan Phượng"),
+        ("Đông Anh","Đông Anh"),
+        ("Đống Đa","Đống Đa"),
+        ("Gia Lâm","Gia Lâm"),
+        ("Hà Đông","Hà Đông"),
+        ("Hoài Đức","Hoài Đức"),
+        ("Hoàn Kiếm","Hoàn Kiếm"),
+        ("Hoàng Mai","Hoàng Mai"),
+        ("Long Biên","Long Biên"),
+        ("Mê Linh","Mê Linh"),
+        ("Mỹ Đức","Mỹ Đức"),
+        ("Phú Xuyên","Phú Xuyên"),
+        ("Phúc Thọ","Phúc Thọ"),
+        ("Quốc Oai","Quốc Oai"),
+        ("Sóc Sơn","Sóc Sơn"),
+        ("Sơn Tây","Sơn Tây"),
+        ("Tây Hồ","Tây Hồ"),
+        ("Thạch Thất","Thạch Thất"),
+        ("Thanh Oai","Thanh Oai"),
+        ("Thanh Trì","Thanh Trì"),
+        ("Thanh Xuân","Thanh Xuân"),
+        ("Thường Tín","Thường Tín"),
+        ("Từ Liêm","Từ Liêm"),
+        ("Từ Liêm","Từ Liêm"),
+        ("Ứng Hòa","Ứng Hòa"),
+    )
 
-    phong_gddt = forms.CharField(max_length = 255)
+    phong_gddt = forms.CharField(max_length = 255,widget=forms.Select(choices=PHONG_GDDT))
     truong_tieu_hoc = forms.CharField(max_length = 255)
     lop = forms.CharField(max_length = 255)
     ho_va_ten = forms.CharField(max_length = 255)
     gioi_tinh = forms.CharField(widget=forms.Select(choices=GIOI_TINH), max_length = 3)
-    ngay_sinh = forms.DateTimeField(widget=DateInput(format=('%Y-%m-%d'),attrs={'type': 'date'}),input_formats=['%d-%m-%Y'],required=True)
+    ngay_sinh = forms.DateField(widget=forms.TextInput(attrs={'class': 'datepicker'}),required=True)
     noi_sinh = forms.CharField(max_length = 255)
     dan_toc = forms.CharField(max_length = 255)
 
-    noi_thuong_tru_so_nha = forms.CharField(max_length = 255)
-    noi_thuong_tru_to = forms.CharField(max_length = 255)
+    noi_thuong_tru_so_nha = forms.CharField(max_length = 255,required=False)
+    noi_thuong_tru_to = forms.CharField(max_length = 255,required=False)
     noi_thuong_tru_phuong = forms.CharField(max_length = 255)
     noi_thuong_tru_quan_huyen = forms.CharField(max_length = 255)
     noi_thuong_tru_tinh = forms.CharField(max_length = 255)

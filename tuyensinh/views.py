@@ -217,21 +217,12 @@ class ApplicationView(View):
         return ''.join([secrets.choice(self.tokens) for i in range(4)])
 
     def get(self, request, id):
-        print(id)
-        if len(id) != 8 and len(id) != 10:
-            return handler404(request)
-
         application = Application.objects.filter(ma_ho_so = id).first()
 
         if len(id) == 10:
-            if not id.isdigit():
-                return handler404(request)
-            application = Application()
-            application.ma_hoc_sinh = id
-            print(application.ma_hoc_sinh)
-        elif len(id) == 8:
-            if not request.user.is_superuser:
-                return handler404(request)
+            if id.isdigit():
+                application = Application()
+                application.ma_hoc_sinh = id
 
         if not application:
             return handler404(request)

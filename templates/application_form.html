@@ -46,7 +46,7 @@
 
         <div class="row">
             <div class="field" style="width:5.1cm">
-                <label class="form-label">Tháng/ngày/năm sinh:</label> 
+                <label class="form-label">Ngày-tháng-năm sinh:</label> 
                 <div class="form">{{form.ngay_sinh }}</div>
                 <span style="font-size:3mm"><i>(Ghi đúng theo giấy khai sinh)</i></span>
             </div>
@@ -93,7 +93,7 @@
 
         <div class="row">
             <div class="field" style="width:5.1cm">
-                <label class="form-label">Số điện thoại:</label> 
+                <label class="form-label">Điện thoại liên hệ:</label> 
                 <div class="form">{{form.sdt}}</div>
                 <p style="font-size:3mm;margin: .3em;">&nbsp; </p>
             </div>
@@ -221,8 +221,20 @@
                     <div><b>CHA/MẸ/NGƯỜI GIÁM HỘ CỦA HỌC SINH</b></div>
                     <div><i>(Ký, ghi họ tên)</i> </div>
                 </center>
-
           
         </div>
        
 </form>
+
+<script>
+    $(document).ready (function() {
+        {% if application.ngay_sinh %}
+            $('#id_ngay_sinh').val("{{application.ngay_sinh}}")
+        {% endif  %}
+        $('#id_ngay_sinh').datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+</script>
