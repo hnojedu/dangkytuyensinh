@@ -48,7 +48,7 @@
             x.open("GET", "/get_status/" + "{{ application }}", true);
             x.send();
         }
-        window.setInterval(show_status, 2500);
+        show_status();
     }
 </script>
 {% endblock %}

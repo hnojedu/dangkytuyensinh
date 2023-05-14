@@ -212,7 +212,7 @@ class ApplicationSearchForm(forms.Form):
 
     def clean_ma_ho_so(self):
         ma_ho_so = self.cleaned_data['ma_ho_so']
-        if not objects.filter(ma_ho_so = ma_ho_so).exists():
+        if not Application.objects.filter(ma_ho_so = ma_ho_so).exists():
             raise forms.ValidationError("Mã hồ sơ không tồn tại.")
         
         return ma_ho_so
