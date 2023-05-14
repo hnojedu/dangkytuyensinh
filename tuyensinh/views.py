@@ -218,6 +218,8 @@ class ApplicationView(View):
 
     def get(self, request, id):
         application = Application.objects.filter(ma_ho_so = id).first()
+        if application and not request.user.is_superuser:
+            return handler404(request)
 
         if len(id) == 10:
             if id.isdigit():
@@ -240,17 +242,16 @@ class ApplicationView(View):
     def post(self, request, id = ""):
         form = ApplicationForm(request.POST, request.FILES)
 
-        if len(id) != 8 and len(id) != 10:
-            return handler404(request)
-
         application = Application.objects.filter(ma_ho_so = id).first()
 
-        if len(id) == 10:
-            if not id.isdigit():
-                return handler404(request)
-            application = Application()
+        if application and not request.user.is_superuser:
+            return handler404(request)
 
-        if (len(id) == 8 and not request.user.is_superuser) or (not application):
+        if len(id) == 10:
+            if id.isdigit():
+                application = Application()
+
+        if (not application):
             return handler404(request)
 
         if form.is_valid():

@@ -28,8 +28,8 @@ class ApplicationForm(forms.Form):
     )
     PHONG_GDDT = (
         ("Ba Đình","Ba Đình"),
-        ("Bà Trưng","Bà Trưng"),
         ("Ba Vì","Ba Vì"),
+        ("Bắc Từ Liêm","Bắc Từ Liêm"),
         ("Cầu Giấy","Cầu Giấy"),
         ("Chương Mỹ","Chương Mỹ"),
         ("Đan Phượng","Đan Phượng"),
@@ -37,12 +37,14 @@ class ApplicationForm(forms.Form):
         ("Đống Đa","Đống Đa"),
         ("Gia Lâm","Gia Lâm"),
         ("Hà Đông","Hà Đông"),
+        ("Hai Bà Trưng","Hai Bà Trưng"),
         ("Hoài Đức","Hoài Đức"),
         ("Hoàn Kiếm","Hoàn Kiếm"),
         ("Hoàng Mai","Hoàng Mai"),
         ("Long Biên","Long Biên"),
         ("Mê Linh","Mê Linh"),
         ("Mỹ Đức","Mỹ Đức"),
+        ("Nam Từ Liêm","Nam Từ Liêm"),
         ("Phú Xuyên","Phú Xuyên"),
         ("Phúc Thọ","Phúc Thọ"),
         ("Quốc Oai","Quốc Oai"),
@@ -54,8 +56,6 @@ class ApplicationForm(forms.Form):
         ("Thanh Trì","Thanh Trì"),
         ("Thanh Xuân","Thanh Xuân"),
         ("Thường Tín","Thường Tín"),
-        ("Từ Liêm","Từ Liêm"),
-        ("Từ Liêm","Từ Liêm"),
         ("Ứng Hòa","Ứng Hòa"),
     )
 
