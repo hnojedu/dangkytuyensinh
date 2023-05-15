@@ -1,7 +1,7 @@
 
 import multiprocessing
 
-wsgi_app = "project.wsgi:application"
+wsgi_app = "tuyensinh.wsgi:application"
 loglevel = "debug"
 workers = multiprocessing.cpu_count() + 1
 threads = 2
