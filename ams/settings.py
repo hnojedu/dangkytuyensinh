@@ -30,6 +30,9 @@ DEBUG = True
 USE_L10N = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://tuyensinh.hn-ams.edu.vn/'
+]
 
 
 # Application definition
