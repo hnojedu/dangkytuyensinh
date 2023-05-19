@@ -209,7 +209,6 @@ def my_rate(group, request):
         return '1000/m'
     return '15/d'
 
-@method_decorator(ratelimit(key='user_or_ip', rate=my_rate, method='POST'), name='post')
 class ApplicationView(View):
     tokens = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
