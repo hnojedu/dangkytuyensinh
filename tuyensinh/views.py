@@ -78,7 +78,7 @@ def manage_application(request):
         return handler404(request)
 
     search = request.GET['search'] if 'search' in request.GET else ''
-    order_by = request.GET['sort_by'] if 'sort_by' in  request.GET and request.GET['sort_by'] else 'ngay_nop'
+    order_by = request.GET['sort_by'] if 'sort_by' in  request.GET and request.GET['sort_by'] else 'ma_ho_so'
     page = int(request.GET['page']) if 'page' in request.GET and request.GET['page'].isdigit() else 1
 
     search_by_id = Application.objects.none()
@@ -91,7 +91,7 @@ def manage_application(request):
 
     print("qwfwefweeqweqwe")
     print(order_by)
-    if order_by not in ["ngay_nop", "-tong_diem", "-ngay_nop", "tong_diem"]:
+    if order_by not in ["ngay_nop", "-tong_diem", "-ngay_nop", "tong_diem", "ma_ho_so", "-ma_ho_so"]:
         return handler404(request)
 
     applications = (search_by_id | search_by_name).order_by(order_by)[(page - 1) * 100 : page * 100]
