@@ -353,10 +353,12 @@ class SearchApplicationView(View):
 
     def post(self, request):
         form = ApplicationSearchForm(request.POST)
-        print(form)
         if form.is_valid():
             ma_ho_so = form.cleaned_data['ma_ho_so']
-            return HttpResponseRedirect(f"/application/{ma_ho_so}")
+            applications =  Application.objects.filter(ma_hoc_sinh = ma_ho_so) |  Application.objects.filter(ma_ho_so = ma_ho_so)
+            return render(request, 'search.html', {
+                'applications': applications
+            })
 
         return render(request, 'search.html', {
             'form': form

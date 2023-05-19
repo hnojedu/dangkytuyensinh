@@ -4,6 +4,8 @@
 
 {% block body %}
 
+
+{% if not applications %}
 <section class="bg-gray-50 light:bg-gray-900">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         {% if form.errors.items %}
@@ -11,19 +13,19 @@
             <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
             <span class="sr-only">Info</span>
             <div>
-                Mã hồ sơ không hợp lệ.
+                Hồ sơ không tồn tại.
             </div>
           </div>
         {% endif %}
         <div class="w-full bg-white rounded-lg shadow light:border md:mt-0 sm:max-w-md xl:p-0 light:bg-gray-800 light:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl light:text-white">
-                    Điền mã hồ sơ
+                    Điền mã hồ sơ hoặc mã học sinh (gồm 10 số)
                 </h1>
                 <form class="space-y-4 md:space-y-6" method="POST">
                     {% csrf_token %}
                     <div>
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Mã hồ sơ</label>
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Mã hồ sơ/Mã học sinh</label>
                         <input type="text" name="ma_ho_so" autofocus="" autocapitalize="none" maxlength="150" required="" id="id_ma_ho_so" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400 light:text-white light:focus:ring-blue-500 light:focus:border-blue-500">
                     </div>
                     <button type="submit" class="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center light:bg-primary-600 light:hover:bg-primary-700 light:focus:ring-primary-800">Tìm kiếm</button>
@@ -32,4 +34,80 @@
         </div>
     </div>
   </section>
+{% else %}
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg" style="padding-top:100px">
+    <table class="w-full text-sm text-left text-gray-500 light:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Mã hồ sơ
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Mã học sinh
+                        <a href="#"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                    </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Tên học sinh
+                        <a href="#"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                    </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Trường
+                        <a href="#"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                    </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Tổng điểm
+                        <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                    </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <div class="flex items-center">
+                        Ngày nộp
+                        <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                    </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <span class="sr-only">Edit</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+            <tr class="bg-white border-b light:bg-gray-800 light:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap light:text-white">
+                    {{application.ma_ho_so}}
+                </th>
+                <td class="px-6 py-4">
+                    {{application.ma_hoc_sinh}}
+                </td>
+                <td class="px-6 py-4">
+                    {{application.ho_va_ten}}
+                </td>
+                <td class="px-6 py-4">
+                    {{application.truong_tieu_hoc}}
+                </td>
+                <td class="px-6 py-4">
+                    {{application.tong_diem}}
+                </td>
+                <td class="px-6 py-4">
+                    {{application.ngay_nop}}
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <a href="{% url 'view' application.ma_ho_so%}" target="_blank" class="font-medium text-blue-600 light:text-blue-500 hover:underline">Xem hồ sơ</a>
+                </td>
+            </tr>
+            {% endfor %}
+           
+        </tbody>
+    </table>
+</div>
+</div>
+{% endif %}
 {% endblock %}
