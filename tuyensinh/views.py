@@ -318,6 +318,9 @@ class ApplicationView(View):
             application.ma_ho_so = (str(application.pk).zfill(4) + '-' + self.random_id()) if len(id) == 10 else id
             application.save()
 
+            if request.user.is_superuser:
+                _generate_docx(application)
+
             return HttpResponseRedirect("/application/"+str(application.ma_ho_so)+"/1")
 
         return render(request, "send_application.html", {
