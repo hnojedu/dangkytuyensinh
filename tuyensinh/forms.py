@@ -57,6 +57,7 @@ class ApplicationForm(forms.Form):
         ("Thanh Xuân","Thanh Xuân"),
         ("Thường Tín","Thường Tín"),
         ("Ứng Hòa","Ứng Hòa"),
+        ("Khác","Khác"),
     )
 
     phong_gddt = forms.CharField(max_length = 255,widget=forms.Select(choices=PHONG_GDDT))
