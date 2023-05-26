@@ -14,6 +14,7 @@ from docx import Document
 import threading
 import shutil
 import os
+import pandas as pd
 
 def application_to_form(application, id = 0):
     return ApplicationForm(initial={
@@ -391,4 +392,70 @@ def handler404(request, *args, **argv):
 def handler500(request, *args, **argv):
     response = render(request, '500.html')
     response.status_code = 500
+    return response
+
+def export_to_excel(request):
+    # Retrieve data from your table
+    table_data = Application.objects.all()  # Replace `YourTableModel` with your actual table model
+
+    column_names = {
+        'id': 'STT',
+        'ma_ho_so': 'Mã hồ sơ',
+        'phong_gddt': 'Phòng GDDT',
+        'truong_tieu_hoc': 'Trường tiểu học',
+        'lop': 'Lớp',
+        'ho_va_ten': 'Họ và tên',
+        'gioi_tinh': 'Giới tính',
+        'ngay_sinh': 'Ngày tháng năm sinh',
+        'noi_sinh': 'Nơi sinh',
+        'dan_toc': 'Dân tộc',
+        'noi_thuong_tru_so_nha': 'Số nhà (ngõ/ngách)',
+        'noi_thuong_tru_to': 'Tổ (thôn/khu phố)',
+        'noi_thuong_tru_phuong': 'Phường (xã/thị trấn)',
+        'noi_thuong_tru_quan_huyen': 'Quận (huyện)',
+        'noi_thuong_tru_tinh': 'Tỉnh (TP)',
+        'sdt': 'Số điện thoại',
+        'ma_hoc_sinh': 'Mã học sinh',
+        'ma_dinh_danh': 'Mã định danh',
+        'khen_thuong_1': 'Danh hiệu lớp 1',
+        'khen_thuong_2': 'Danh hiệu lớp 2',
+        'khen_thuong_3': 'Danh hiệu lớp 3',
+        'khen_thuong_4': 'Danh hiệu lớp 4',
+        'khen_thuong_5': 'Danh hiệu lớp 5',
+        'ket_qua_1_toan': 'Toán Lớp 1',
+        'ket_qua_1_tieng_viet': 'Tiếng Việt Lớp 1',
+        'ket_qua_2_toan': 'Toán Lớp 2',
+        'ket_qua_2_tieng_viet': 'Tiếng Việt Lớp 2',
+        'ket_qua_3_toan': 'Toán Lớp 3',
+        'ket_qua_3_tieng_viet': 'Tiếng Việt Lớp 3',
+        'ket_qua_3_tieng_anh': 'Tiếng Anh Lớp 3',
+        'ket_qua_4_toan': 'Toán Lớp 4',
+        'ket_qua_4_tieng_viet': 'Tiếng Việt Lớp 4',
+        'ket_qua_4_khoa_hoc': 'Khoa học Lớp 4',
+        'ket_qua_4_su_dia': 'Lịch sử và Địa lí Lớp 4',
+        'ket_qua_4_tieng_anh': 'Tiếng Anh Lớp 4',
+        'ket_qua_5_toan': 'Toán Lớp 5',
+        'ket_qua_5_tieng_viet': 'Tiếng Việt Lớp 5',
+        'ket_qua_5_khoa_hoc': 'Khoa học Lớp 5',
+        'ket_qua_5_su_dia': 'Lịch sử và Địa lí Lớp 5',
+        'ket_qua_5_tieng_anh': 'Tiếng Anh Lớp 5',
+        'tong_diem': 'Tổng điểm'
+    }
+
+    # Create a pandas DataFrame from the table data
+    table_data = Application.objects.all()  # Replace `YourTableModel` with your actual table model
+
+    # Create a pandas DataFrame from the table data
+    df = pd.DataFrame(list(table_data.values()))  # Convert queryset to a list of dictionaries
+
+    # Rename the DataFrame columns based on the column names mapping
+    df = df.rename(columns=column_names)
+
+    # Create a response object with the appropriate content type for Excel
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="data.xlsx"'
+
+    # Write the DataFrame to the response as an Excel file
+    df.to_excel(response, index=False)
+
     return response

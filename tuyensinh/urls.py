@@ -11,7 +11,9 @@ urlpatterns = [
     path("application/<str:id>/edit", views.ApplicationView.as_view(), name="edit_admin"),
     path("search", views.SearchApplicationView.as_view(), name="search"),
     path("print", views.PrintView.as_view(), name="print"),
-    path("get_status/<str:ma_ho_so>", views.get_status, name="get_status")
+    path("get_status/<str:ma_ho_so>", views.get_status, name="get_status"),
+    path('export/', views.export_to_excel, name='export_to_excel'),
+
 ]
 
 handler404 = 'tuyensinh.views.handler404'
