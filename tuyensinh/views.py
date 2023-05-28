@@ -76,6 +76,10 @@ def index(request):
 
     return HttpResponseRedirect("/edit")
 
+def get_portal_status():
+    with open("portal_status", "r") as f:
+        return f.read() == '1'
+
 def manage_application(request):
     if not request.user.is_superuser:
         return handler404(request)
@@ -219,7 +223,7 @@ class ApplicationView(View):
         return ''.join([secrets.choice(self.tokens) for i in range(4)])
 
     def get(self, request, id):
-        if not request.user.is_superuser and not portal_open_status:
+        if not request.user.is_superuser and not get_portal_status():
             return render(request, "portal_close.html")
 
         application = Application.objects.filter(ma_ho_so = id).first()
@@ -245,7 +249,7 @@ class ApplicationView(View):
     
 
     def post(self, request, id = ""):
-        if not request.user.is_superuser and not portal_open_status:
+        if not request.user.is_superuser and not get_portal_status():
             return HttpResponse(404)
 
         form = ApplicationForm(request.POST, request.FILES)
@@ -341,7 +345,7 @@ class ApplicationView(View):
 
 class StudentIDView(View):
     def get(self, request):
-        if not request.user.is_superuser and not portal_open_status:
+        if not request.user.is_superuser and not get_portal_status():
             return render(request, "portal_close.html")
 
         return render(request, 'student_id.html', {
@@ -384,7 +388,7 @@ class PrintView(View):
         if not request.user.is_superuser:
             return handler404(request)
         return render(request, 'print_application.html', {
-            'portal_status': portal_open_status
+            'portal_status': get_portal_status()
         })
 
     def post(self, request):
@@ -473,11 +477,17 @@ def export_to_excel(request):
 
     return response
 
+
+
+def write_portal_status(s):
+    with open("portal_status", "w") as f:
+        f.write(s)
+
 def toggle_portal_status(request):
-    global portal_open_status
     if not request.user.is_superuser:
         return handler404(request)
     
-    portal_open_status = not portal_open_status
+    portal_open_status = get_portal_status()
+    write_portal_status('0' if portal_open_status else '1')
 
     return HttpResponse(200)
