@@ -16,6 +16,8 @@ import shutil
 import os
 import pandas as pd
 
+portal_open_status = True
+
 def application_to_form(application, id = 0):
     return ApplicationForm(initial={
                 'phong_gddt': application.phong_gddt,
@@ -217,6 +219,9 @@ class ApplicationView(View):
         return ''.join([secrets.choice(self.tokens) for i in range(4)])
 
     def get(self, request, id):
+        if not request.user.is_superuser and not portal_open_status:
+            return render(request, "portal_close.html")
+
         application = Application.objects.filter(ma_ho_so = id).first()
         if application and not request.user.is_superuser:
             return handler404(request)
@@ -240,6 +245,9 @@ class ApplicationView(View):
     
 
     def post(self, request, id = ""):
+        if not request.user.is_superuser and not portal_open_status:
+            return HttpResponse(404)
+
         form = ApplicationForm(request.POST, request.FILES)
 
         application = Application.objects.filter(ma_ho_so = id).first()
@@ -333,6 +341,9 @@ class ApplicationView(View):
 
 class StudentIDView(View):
     def get(self, request):
+        if not request.user.is_superuser and not portal_open_status:
+            return render(request, "portal_close.html")
+
         return render(request, 'student_id.html', {
             'form': StudentIDForm()
         })
@@ -459,3 +470,12 @@ def export_to_excel(request):
     df.to_excel(response, index=False)
 
     return response
+
+def toggle_portal_status(request):
+    global portal_open_status
+    if not request.user.is_superuser:
+        return handler404(request)
+    
+    portal_open_status = not portal_open_status
+
+    return HttpResponse(200)

@@ -13,6 +13,7 @@ urlpatterns = [
     path("print", views.PrintView.as_view(), name="print"),
     path("get_status/<str:ma_ho_so>", views.get_status, name="get_status"),
     path('export/', views.export_to_excel, name='export_to_excel'),
+    path('toggle/', views.toggle_portal_status, name='toggle')
 
 ]
 
