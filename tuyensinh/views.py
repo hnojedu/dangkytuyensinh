@@ -469,7 +469,13 @@ def export_to_excel(request):
         'ket_qua_5_khoa_hoc': 'Khoa học Lớp 5',
         'ket_qua_5_su_dia': 'Lịch sử và Địa lí Lớp 5',
         'ket_qua_5_tieng_anh': 'Tiếng Anh Lớp 5',
-        'tong_diem': 'Tổng điểm'
+        
+        'tong_diem_1': 'Tổng điểm Lớp 1',
+        'tong_diem_2': 'Tổng điểm Lớp 2',
+        'tong_diem_3': 'Tổng điểm Lớp 3',
+        'tong_diem_4': 'Tổng điểm Lớp 4',
+        'tong_diem_5': 'Tổng điểm Lớp 5',
+        'tong_diem': 'Tổng điểm',
     }
 
     # Create a pandas DataFrame from the table data
