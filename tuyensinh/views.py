@@ -383,7 +383,9 @@ class PrintView(View):
     def get(self, request):
         if not request.user.is_superuser:
             return handler404(request)
-        return render(request, 'print_application.html', {})
+        return render(request, 'print_application.html', {
+            'portal_status': portal_open_status
+        })
 
     def post(self, request):
         print("123")
