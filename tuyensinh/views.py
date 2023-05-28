@@ -216,6 +216,14 @@ def my_rate(group, request):
         return '1000/m'
     return '15/d'
 
+def mimdak(application):
+    application.tong_diem_1 = application.ket_qua_1_toan + application.ket_qua_1_tieng_viet
+    application.tong_diem_2 = application.ket_qua_2_toan + application.ket_qua_2_tieng_viet
+    application.tong_diem_3 = application.ket_qua_3_toan + application.ket_qua_3_tieng_viet + application.ket_qua_3_tieng_anh
+    application.tong_diem_4 = application.ket_qua_4_toan + application.ket_qua_4_tieng_viet + application.ket_qua_4_tieng_anh + application.ket_qua_4_khoa_hoc + application.ket_qua_4_su_dia
+    application.tong_diem_5 = application.ket_qua_5_toan + application.ket_qua_5_tieng_viet + application.ket_qua_5_tieng_anh + application.ket_qua_5_khoa_hoc + application.ket_qua_5_su_dia
+    application.save()
+
 class ApplicationView(View):
     tokens = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -308,6 +316,11 @@ class ApplicationView(View):
             application.ket_qua_5_khoa_hoc = form['ket_qua_5_khoa_hoc']
             application.ket_qua_5_tieng_anh = form['ket_qua_5_tieng_anh']
 
+            application.tong_diem_1 = application.ket_qua_1_toan + application.ket_qua_1_tieng_viet
+            application.tong_diem_2 = application.ket_qua_2_toan + application.ket_qua_2_tieng_viet
+            application.tong_diem_3 = application.ket_qua_3_toan + application.ket_qua_3_tieng_viet + application.ket_qua_3_tieng_anh
+            application.tong_diem_4 = application.ket_qua_4_toan + application.ket_qua_4_tieng_viet + application.ket_qua_4_tieng_anh + application.ket_qua_4_khoa_hoc + application.ket_qua_4_su_dia
+            application.tong_diem_5 = application.ket_qua_5_toan + application.ket_qua_5_tieng_viet + application.ket_qua_5_tieng_anh + application.ket_qua_5_khoa_hoc + application.ket_qua_5_su_dia
             application.tong_diem = application.ket_qua_1_toan \
                                     +application.ket_qua_1_tieng_viet \
                                     +application.ket_qua_2_toan \
@@ -434,11 +447,11 @@ def export_to_excel(request):
         'sdt': 'Số điện thoại',
         'ma_hoc_sinh': 'Mã học sinh',
         'ma_dinh_danh': 'Mã định danh',
-        'khen_thuong_1': 'Danh hiệu lớp 1',
-        'khen_thuong_2': 'Danh hiệu lớp 2',
-        'khen_thuong_3': 'Danh hiệu lớp 3',
-        'khen_thuong_4': 'Danh hiệu lớp 4',
-        'khen_thuong_5': 'Danh hiệu lớp 5',
+        'khen_thuong_1': 'Tổng hợp KQĐG lớp 1',
+        'khen_thuong_2': 'Tổng hợp KQĐG lớp 2',
+        'khen_thuong_3': 'Tổng hợp KQĐG lớp 3',
+        'khen_thuong_4': 'Tổng hợp KQĐG lớp 4',
+        'khen_thuong_5': 'Tổng hợp KQĐG lớp 5',
         'ket_qua_1_toan': 'Toán Lớp 1',
         'ket_qua_1_tieng_viet': 'Tiếng Việt Lớp 1',
         'ket_qua_2_toan': 'Toán Lớp 2',

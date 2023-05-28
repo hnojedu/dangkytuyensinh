@@ -19,10 +19,10 @@ class Application(models.Model):
             models.Index(fields = ['ma_ho_so'])
         ]
 
+    id = models.AutoField(primary_key = True)
     ma_ho_so = models.CharField(null = True)
 
     # Thong tin ca nhan
-    id = models.AutoField(primary_key = True)
 
     phong_gddt = models.CharField(max_length = 255)
     truong_tieu_hoc = models.CharField(max_length = 255)
@@ -77,6 +77,11 @@ class Application(models.Model):
    
     ket_qua_5_tieng_anh = models.FloatField(null=True)
 
+    tong_diem_1 = models.FloatField(null=True)
+    tong_diem_2 = models.FloatField(null=True)
+    tong_diem_3 = models.FloatField(null=True)
+    tong_diem_4 = models.FloatField(null=True)
+    tong_diem_5 = models.FloatField(null=True)
     tong_diem = models.FloatField(null = True)
 
     ngay_nop = models.DateField(auto_now_add = True, null = True)
