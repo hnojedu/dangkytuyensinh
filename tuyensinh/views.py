@@ -241,6 +241,33 @@ class ApplicationView(View):
         if len(id) == 10:
             if id.isdigit():
                 application = Application()
+                application.khen_thuong_1 = 'HTXS'
+                application.khen_thuong_2 = 'HTXS'
+                application.khen_thuong_3 = 'HTXS'
+                application.khen_thuong_4 = 'HTXS'
+                application.khen_thuong_5 = 'HTXS'
+                application.ket_qua_1_toan = 10
+                application.ket_qua_1_tieng_viet = 10
+                
+                application.ket_qua_2_toan = 10
+                application.ket_qua_2_tieng_viet = 10
+
+                application.ket_qua_3_toan = 10
+                application.ket_qua_3_tieng_viet = 10
+                application.ket_qua_3_tieng_anh = 10
+
+                application.ket_qua_4_toan = 10
+                application.ket_qua_4_tieng_viet = 10
+                application.ket_qua_4_khoa_hoc = 10
+                application.ket_qua_4_su_dia= 10
+                application.ket_qua_4_tieng_anh = 10
+
+                application.ket_qua_5_toan = 10
+                application.ket_qua_5_tieng_viet = 10
+                application.ket_qua_5_su_dia    = 10
+                application.ket_qua_5_khoa_hoc = 10
+            
+                application.ket_qua_5_tieng_anh = 10
                 application.ma_hoc_sinh = id
 
         if not application:
