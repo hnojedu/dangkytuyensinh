@@ -268,6 +268,8 @@ class ApplicationView(View):
                 application.ket_qua_5_khoa_hoc = 10
             
                 application.ket_qua_5_tieng_anh = 10
+                application.dan_toc = 'Kinh'
+                application.noi_thuong_tru_tinh = 'Hà Nội'
                 application.ma_hoc_sinh = id
 
         if not application:
