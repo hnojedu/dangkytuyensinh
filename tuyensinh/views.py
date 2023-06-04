@@ -415,14 +415,14 @@ class SearchApplicationView(View):
         return serialized_df
 
     def deserialize_dataframe(self, serialized_df):
-        dataframe = pd.read_json(serialized_df, orient='split')
+        dataframe = pd.read_json(serialized_df, orient='split',dtype={'mã_học_sinh': str})
         return dataframe
 
     def load_excel(self):
-        df = pd.read_excel("data.xlsx", sheet_name="LocV1",skiprows=1)
+        df = pd.read_excel("data.xlsx", sheet_name="LocV1",skiprows=1,dtype={'Mã học sinh': str})
+        df = df.dropna()
         df.columns = [c.lower().replace(' ', '_') for c in df.columns]
-        print( [c.lower().replace(' ', '_') for c in df.columns])
-        cache.set('df', self.serialize_dataframe(df))
+        cache.set('df', self.serialize_dataframe(df), 86400)
 
     def search(self, query):
         serialized_df = cache.get('df') 
@@ -432,8 +432,6 @@ class SearchApplicationView(View):
             serialized_df = cache.get('df')
         
         df = self.deserialize_dataframe(serialized_df)
-
-        print(df)
 
         result = pd.concat([df.query('mã_hồ_sơ == @query'), df.query('mã_học_sinh == @query')])
 
