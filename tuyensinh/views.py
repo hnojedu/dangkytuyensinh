@@ -407,7 +407,38 @@ class StudentIDView(View):
             'form': form
         })
 
+from django.core.cache import cache
+
 class SearchApplicationView(View):
+    def serialize_dataframe(self, dataframe):
+        serialized_df = dataframe.to_json(orient='split')
+        return serialized_df
+
+    def deserialize_dataframe(self, serialized_df):
+        dataframe = pd.read_json(serialized_df, orient='split')
+        return dataframe
+
+    def load_excel(self):
+        df = pd.read_excel("data.xlsx", sheet_name="LocV1",skiprows=1)
+        df.columns = [c.lower().replace(' ', '_') for c in df.columns]
+        print( [c.lower().replace(' ', '_') for c in df.columns])
+        cache.set('df', self.serialize_dataframe(df))
+
+    def search(self, query):
+        serialized_df = cache.get('df') 
+
+        if not serialized_df:
+            self.load_excel()
+            serialized_df = cache.get('df')
+        
+        df = self.deserialize_dataframe(serialized_df)
+
+        print(df)
+
+        result = pd.concat([df.query('mã_hồ_sơ == @query'), df.query('mã_học_sinh == @query')])
+
+        return result
+
     def get(self, request):
         return render(request, 'search.html', {
             'form': ApplicationSearchForm()
@@ -417,10 +448,20 @@ class SearchApplicationView(View):
         form = ApplicationSearchForm(request.POST)
         if form.is_valid():
             ma_ho_so = form.cleaned_data['ma_ho_so']
-            applications =  Application.objects.filter(ma_hoc_sinh = ma_ho_so) |  Application.objects.filter(ma_ho_so = ma_ho_so)
-            return render(request, 'search.html', {
-                'applications': applications
-            })
+            if False:
+                applications =  Application.objects.filter(ma_hoc_sinh = ma_ho_so) |  Application.objects.filter(ma_ho_so = ma_ho_so)
+                return render(request, 'search.html', {
+                    'applications': applications
+                })
+            else:
+                result = self.search(ma_ho_so)
+
+                if result.empty:
+                    return render(request, "result.html")
+                else:
+                    return render(request, "result.html", {
+                        'application' : Application.objects.get(ma_ho_so = result.iat[0,1])
+                    })
 
         return render(request, 'search.html', {
             'form': form
@@ -540,3 +581,4 @@ def toggle_portal_status(request):
     write_portal_status('0' if portal_open_status else '1')
 
     return HttpResponse(200)
+

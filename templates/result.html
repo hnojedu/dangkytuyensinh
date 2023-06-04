@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<section class="bg-gray-50 light:bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div class="w-full bg-white rounded-lg shadow light:border md:mt-0 sm:max-w-md xl:p-0 light:bg-gray-800 light:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                {% if not application %}
+                <div style="color:red;">
+                    <center>
+                        <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 6em;"></i>
+                        <p style="font-size:1.6em;font-weight: bold;">Thí sinh KHÔNG qua xét tuyển vòng 1</p>
+                    </center>
+                </div>
+                {% else %}
+                    <center>
+                    <div style="color:green" >
+                        <i class="fa fa-check-circle-o" aria-hidden="true" style="font-size: 6em;"></i>
+                        <div style="font-weight: bold;">
+                        <p style="font-size:1.6em">Thí sinh đã qua xét tuyển vòng 1</p>
+                        <p>Họ và tên: {{application.ho_va_ten}}</p>
+                        <p>Mã hồ sơ: {{application.ma_ho_so}}</p>
+                        <p>Họ và tên: {{application.ho_va_ten}}</p>
+                        <p>Trường: {{application.truong_tieu_hoc}}</p>
+                        <p>Tổng điểm: {{application.tong_diem}}</p>
+                    </div>
+                    </div>
+                </center>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+  </section>
+{% endblock %}
