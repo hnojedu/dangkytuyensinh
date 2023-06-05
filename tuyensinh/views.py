@@ -477,6 +477,9 @@ class SearchApplicationView(View):
                     outcome = 1
                 elif result['KẾT QUẢ'] == "Chưa nộp hồ sơ":
                     outcome = 2
+                
+                result.pop("KẾT QUẢ", None)
+                result.pop("STT", None)
                     
               
                 return render(request, "result.html", {
