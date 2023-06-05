@@ -438,6 +438,9 @@ class SearchApplicationView(View):
         return result
 
     def get(self, request):
+        if not request.user.is_superuser:
+            return HttpResponseRedirect('/')
+
         return render(request, 'search.html', {
             'form': ApplicationSearchForm()
         })
