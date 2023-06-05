@@ -96,8 +96,7 @@ def manage_application(request):
     else:
         search_by_name = Application.objects.all()
 
-    print("qwfwefweeqweqwe")
-    print(order_by)
+
     if order_by not in ["ngay_nop", "-tong_diem", "-ngay_nop", "tong_diem", "ma_ho_so", "-ma_ho_so"]:
         return handler404(request)
 
@@ -415,14 +414,17 @@ class SearchApplicationView(View):
         return serialized_df
 
     def deserialize_dataframe(self, serialized_df):
-        dataframe = pd.read_json(serialized_df, orient='split',dtype={'mã_học_sinh': str})
+        dataframe = pd.read_json(serialized_df, orient='split')
         return dataframe
 
     def load_excel(self):
-        df = pd.read_excel("data.xlsx", sheet_name="LocV1",skiprows=1,dtype={'Mã học sinh': str})
+        df = pd.read_excel("data.xlsx", sheet_name="Data_Search")
         df = df.dropna()
         df.columns = [c.lower().replace(' ', '_') for c in df.columns]
         cache.set('df', self.serialize_dataframe(df), 86400)
+
+    def read_column(self):
+        return pd.read_excel("data.xlsx", sheet_name="Data_Search").columns
 
     def search(self, query):
         serialized_df = cache.get('df') 
@@ -433,13 +435,22 @@ class SearchApplicationView(View):
         
         df = self.deserialize_dataframe(serialized_df)
 
-        result = pd.concat([df.query('mã_hồ_sơ == @query'), df.query('mã_học_sinh == @query')])
+        result = pd.concat([df.query('mã_hồ_sơ == @query & kết_quả == "Đủ điều kiện"'), df.query('mã_học_sinh == @query & kết_quả == "Đủ điều kiện"')])
+
+        if not result.empty:
+            return result
+
+        result = pd.concat([df.query('mã_hồ_sơ == @query & kết_quả == "Không đủ điều kiện"'), df.query('mã_học_sinh == @query & kết_quả == "Không đủ điều kiện"')])
+
+        if not result.empty:
+            return result
+
+        print("123")
+        result = pd.concat([df.query('mã_hồ_sơ  == @query'), df.query('mã_học_sinh == @query')])
 
         return result
 
     def get(self, request):
-        if not request.user.is_superuser:
-            return HttpResponseRedirect('/')
 
         return render(request, 'search.html', {
             'form': ApplicationSearchForm()
@@ -456,13 +467,23 @@ class SearchApplicationView(View):
                 })
             else:
                 result = self.search(ma_ho_so)
+                result.columns = self.read_column()
+                result = result.to_dict(orient="records")[0]
 
-                if result.empty:
-                    return render(request, "result.html")
-                else:
-                    return render(request, "result.html", {
-                        'application' : Application.objects.get(ma_ho_so = result.iat[0,1])
-                    })
+                colors = ['#008000', '#ff0000', '#646464']
+
+                outcome = 0
+                if result['KẾT QUẢ'] == "Không đủ điều kiện":
+                    outcome = 1
+                elif result['KẾT QUẢ'] == "Chưa nộp hồ sơ":
+                    outcome = 2
+                    
+              
+                return render(request, "result.html", {
+                    'application' : result,
+                    'outcome': outcome,
+                    'color': colors[outcome]
+                })
 
         return render(request, 'search.html', {
             'form': form
@@ -477,7 +498,6 @@ class PrintView(View):
         })
 
     def post(self, request):
-        print("123")
         if not request.user.is_superuser:
             return handler404(request)
 
