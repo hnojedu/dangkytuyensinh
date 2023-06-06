@@ -244,7 +244,7 @@ class ApplicationSearchForm(forms.Form):
     ma_ho_so = forms.CharField()
 
     def clean_ma_ho_so(self):
-        ma_ho_so = self.cleaned_data['ma_ho_so']
+        ma_ho_so = self.cleaned_data['ma_ho_so'].upper()
         if (not Application.objects.filter(ma_ho_so = ma_ho_so).exists()) and ((not Application.objects.filter(ma_hoc_sinh = ma_ho_so).exists())):
             raise forms.ValidationError("Mã hồ sơ không tồn tại.")
         

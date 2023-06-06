@@ -445,15 +445,11 @@ class SearchApplicationView(View):
         if not result.empty:
             return result
 
-        print("123")
         result = pd.concat([df.query('mã_hồ_sơ  == @query'), df.query('mã_học_sinh == @query')])
 
         return result
 
     def get(self, request):
-        if not request.user.is_superuser:
-            return HttpResponseRedirect('/')
-
         return render(request, 'search.html', {
             'form': ApplicationSearchForm()
         })
