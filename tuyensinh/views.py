@@ -408,6 +408,15 @@ class StudentIDView(View):
 
 from django.core.cache import cache
 
+def portal_open():
+    status = cache.get('status')
+
+    if status == None:
+        cache.set('status', True, 2592000)
+        return True
+
+    return status
+
 class SearchApplicationView(View):
     def serialize_dataframe(self, dataframe):
         serialized_df = dataframe.to_json(orient='split')
@@ -422,6 +431,8 @@ class SearchApplicationView(View):
         df = df.dropna()
         df.columns = [c.lower().replace(' ', '_') for c in df.columns]
         cache.set('df', self.serialize_dataframe(df), 86400)
+
+    
 
     def read_column(self):
         return pd.read_excel("data.xlsx", sheet_name="Data_Search").columns
@@ -450,9 +461,6 @@ class SearchApplicationView(View):
         return result
 
     def get(self, request):
-        if not request.user.is_superuser:
-            return HttpResponseRedirect("/")
-
         return render(request, 'search.html', {
             'form': ApplicationSearchForm()
         })
@@ -461,7 +469,7 @@ class SearchApplicationView(View):
         form = ApplicationSearchForm(request.POST)
         if form.is_valid():
             ma_ho_so = form.cleaned_data['ma_ho_so']
-            if False:
+            if portal_open():
                 applications =  Application.objects.filter(ma_hoc_sinh = ma_ho_so) |  Application.objects.filter(ma_ho_so = ma_ho_so)
                 return render(request, 'search.html', {
                     'applications': applications
@@ -497,8 +505,12 @@ class PrintView(View):
     def get(self, request):
         if not request.user.is_superuser:
             return handler404(request)
+
+        print("lmao ", portal_open())
         return render(request, 'print_application.html', {
-            'portal_status': get_portal_status()
+            'portal_status': get_portal_status(),
+            'portal_search_status': portal_open(),
+            'form': FileForm()
         })
 
     def post(self, request):
@@ -607,3 +619,21 @@ def toggle_portal_status(request):
 
     return HttpResponse(200)
 
+def toggle_search_portal_status(request):
+    if not request.user.is_superuser:
+        return handler404(request)
+
+    cache.set('status', not portal_open(), 86400 * 30)
+
+    return HttpResponse(200)
+
+def upload_excel(request):
+    excel = request.FILES['excel']
+    
+    with open('data.xlsx', 'wb+') as file:
+        for chunk in excel.chunks():
+            file.write(chunk)
+
+    cache.clear()
+
+    return HttpResponseRedirect('/print')

@@ -13,8 +13,9 @@ urlpatterns = [
     path("print", views.PrintView.as_view(), name="print"),
     path("get_status/<str:ma_ho_so>", views.get_status, name="get_status"),
     path('export/', views.export_to_excel, name='export_to_excel'),
-    path('toggle/', views.toggle_portal_status, name='toggle')
-
+    path('toggle/', views.toggle_portal_status, name='toggle'),
+    path('toggle_search/', views.toggle_search_portal_status, name='toggle_search'),
+    path('upload_excel/', views.upload_excel, name = 'upload_excel'),
 ]
 
 handler404 = 'tuyensinh.views.handler404'

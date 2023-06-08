@@ -226,7 +226,7 @@ class SearchForm(forms.Form):
     page = forms.CharField(required=False)
 
 class FileForm(forms.Form):
-    user = forms.FileField(
+    excel = forms.FileField(
         label='Select a file',
     )
 
